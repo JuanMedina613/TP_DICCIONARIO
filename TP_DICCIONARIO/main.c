@@ -2,6 +2,7 @@
 
 int main()
 {
-    printf("TAIEL\n");
+    tDiccionario dic;
+    crear_dic(&dic, 5);
     return 0;
 }
