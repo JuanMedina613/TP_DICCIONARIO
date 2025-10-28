@@ -4,13 +4,22 @@
 #include <stdlib.h>
 #include "lista.h"
 
+#define ERROR1 0 //Problema relacionado a la Memoria
+#define TODO_OKEY 1 // TODO_OKEY JAJA
+#define VACIO 1
 typedef struct
 {
-    tLista *dic_Lista;
+    tLista *lista;
     size_t capacidad;
 }tDiccionario;
 
-void crear_dic(tDiccionario *pd, size_t capacidad);
+typedef struct{
+    void* valor;
+    size_t tam;
+    char* clave;
+}sDato;
+
+int crear_dic(tDiccionario *pd, size_t capacidad);
 
 /*
 Poner en 0 la cant
@@ -47,10 +56,12 @@ int recorrer_dic(tDiccionario *pd, void (*accion)(void *, void *));
 Llama a la función recorrerLista para cada lista del diccionario
 */
 
-void destruir_dic(tDiccionario *pd);
+int destruir_dic(tDiccionario *pd);
 /*
 Recorre todas las listas haciendo free
 Capacidad y cant pasan a ser 0
 */
+
+size_t hashDiccionario(const char* str);
 
 #endif // FUNCIONESDICCIONARIO_H_INCLUDED
