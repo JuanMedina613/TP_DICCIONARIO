@@ -4,7 +4,8 @@ void sumarValoresDic(void *DatoDiccionario, void *destino)
 {
     sDato *elemento = (sDato *)DatoDiccionario;
     int * acum = (int *)destino;
-    if((*(char *)elemento->valor <= 90 && *(char *)elemento->valor >= 65) || (*(char *)elemento->valor <= 122 && *(char *)elemento->valor >= 97))
+    char c = *(char *)elemento->clave;
+    if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))
     (*acum) += *(int *)(elemento->valor);
 }
 
