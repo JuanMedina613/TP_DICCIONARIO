@@ -192,27 +192,33 @@ void actSumarDuplicados(const void *v1, void *v2)
     *d2 += *d1;
 }
 
-int listaInsertarActDup(tLista *pLista, const void *dato, size_t tamDato, int (*cmp)(const void *, const void*), void (*accion)(const void *, void*))
+int listaInsertarActDup(tLista *pLista, const void *dato, size_t tamDato, int (*cmp)(const void *, const void*), void (*accion)(void *, void*))
 {
     tNodo *insertar = (tNodo *)malloc(sizeof(tNodo) + tamDato);
     tNodo *ant = NULL;
     tNodo *act = *pLista;
+    void *nDato = malloc(tamDato);
 
-    if(!insertar)
+    if(!insertar || !nDato)
     {
+        free(nDato);
         free(insertar);
         return SIN_MEM;
     }
 
-    while(act && cmp(dato, act->info) > 0)
+    memcpy(nDato, dato, tamDato);
+
+    while(act && cmp(nDato, act->info) > 0)
     {
         ant = act;
         act = act->sig;
     }
 
-    if(act && cmp(dato, act->info) == 0)
+    if(act && cmp(nDato, act->info) == 0)
     {
-        accion(dato, act->info);
+        accion(act->info, nDato);
+
+        free(nDato);
         free(insertar);
         return TODO_OK;
     }
@@ -220,10 +226,11 @@ int listaInsertarActDup(tLista *pLista, const void *dato, size_t tamDato, int (*
     insertar->info = insertar+1;
     insertar->tamInfo = tamDato;
     insertar->sig = act;
-    memcpy(insertar->info, dato, tamDato);
+    memcpy(insertar->info, nDato, tamDato);
 
     (ant!= NULL)?(ant->sig = insertar):(*pLista = insertar);
 
+    free(nDato);
     return TODO_OK;
 }
 

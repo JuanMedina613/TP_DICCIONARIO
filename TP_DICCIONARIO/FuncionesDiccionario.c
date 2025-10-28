@@ -41,6 +41,67 @@ size_t hashDiccionario(const char* str)
 
 }
 
+//====================================================//
+int cmpClave(const void *v1, const void *v2)
+{
+    sDato *d1 = (sDato *)v1;
+    sDato *d2 = (sDato *)v2;
+
+    return strcmp(d1->clave, d2->clave);
+}
+
+//====================================================//
+void actValorReemplazo(void *actual, void *nuevo)
+{
+    sDato *act = (sDato *)actual;
+    sDato *nue = (sDato *)nuevo;
+    act->tam = nue->tam;
+    void *aux = malloc(nue->tam);
+    if(!aux)
+        return;
+
+    memcpy(aux, nue->valor, nue->tam);
+    free(act->valor);
+    act->valor = aux;
+}
+//====================================================//
+void actValorSumar(void *actual, void *nuevo)
+{
+    sDato *act = (sDato *)actual;
+
+    *(int *)act->valor += 1;
+
+}
+//====================================================//
+int poner_dic(tDiccionario *pd, const void *valor, size_t tamDato, const char *clave, void (*accion)(void *, void *))
+{
+    sDato nuevo;
+    size_t pos;
+
+    if(!valor)
+        return VACIO;
+
+    nuevo.tam = tamDato;
+    nuevo.clave = (char *)malloc(strlen(clave)+1);
+    nuevo.valor = malloc(tamDato);
+
+    if(!nuevo.clave || !nuevo.valor)
+        return SIN_MEM;
+
+    strcpy(nuevo.clave, clave);
+    memcpy(nuevo.valor, valor, tamDato);
+
+    pos = hashDiccionario(clave) % pd->capacidad;
+
+    if(!listaInsertarActDup((pd->lista + pos), &nuevo, sizeof(nuevo), cmpClave, accion))
+    {
+        free(nuevo.clave);
+        free(nuevo.valor);
+        return ERROR1;
+    }
+
+    return TODO_OKEY;
+}
 
 /*
 Poner en 0 la cant

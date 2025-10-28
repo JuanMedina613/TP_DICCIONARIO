@@ -2,13 +2,13 @@
 #define PROCESADORTEXTO_H_INCLUDED
 #include "FuncionesDiccionario.h"
 
-// ¿Que le enviamos? ¿Diccionario? ¿Lista? ¿String?
-//contarPalabras
+size_t contarPalabras(tDiccionario *pd);
 //contarEspacios
 //contarSignos
 //contarAparicionesPalabra
 //ingresarArchivo
 //cargarDiccionarioDeArchivo
-//menu ///PREGUNTAR SI ES CONSOLA O INTERFAZ DE USUARIO TIPO APP
+//menu
+///PREGUNTAR SI ES CONSOLA O INTERFAZ DE USUARIO TIPO APP
 
 #endif // PROCESADORTEXTO_H_INCLUDED

@@ -31,7 +31,8 @@ int listaVacia(const tLista *pLista);
 int listaInsertarPos(tLista *pLista, const void* dato, size_t tamDato, size_t pos);
 int listaInsertarOrdConDup(tLista *pLista, const void* dato, size_t tamDato, int (*cmp)(const void *, const void*));
 int listaInsertarOrdSinDup(tLista *pLista, const void* dato, size_t tamDato, int (*cmp)(const void *, const void*));
-int listaInsertarActDup(tLista *pLista, const void *dato, size_t tamDato, int (*cmp)(const void *, const void*), void (*accion)(const void *, void*));
+int listaInsertarActDup(tLista *pLista, const void *dato, size_t tamDato, int (*cmp)(const void *, const void*), void (*accion)(void *, void*));
 int listaOrdenarSeleccion(tLista *pLista, int cmp(const void*, const void*));
+int listaRecorrer(tLista *pLista, void (*accion)(void *, void*), void *p);
 
 #endif // LISTA_H_INCLUDED

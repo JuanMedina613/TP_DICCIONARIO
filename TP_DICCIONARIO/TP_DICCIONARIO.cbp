@@ -39,6 +39,9 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Lista.h" />
+		<Unit filename="ProcesadorTexto.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="ProcesadorTexto.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
