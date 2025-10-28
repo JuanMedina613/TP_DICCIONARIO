@@ -277,3 +277,8 @@ int listaOrdenarSeleccion(tLista *pLista, int cmp(const void*, const void*))
     return TODO_OK;
 }
 
+int listaRecorrer(tLista *pLista, void (*accion)(void *, void*), void *p)
+{
+
+    return TODO_OK;
+}
