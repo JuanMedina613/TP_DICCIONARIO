@@ -18,3 +18,31 @@
 1761704117 source:c:\users\administrator\documents\github\tp_diccionario\tp_diccionario\funcionesdiccionario.c
 	"FuncionesDiccionario.h"
 
+1761761641 source:c:\users\argentech.desktop-6m4kgn3.000\desktop\agustín\cursos programación\codeblock\programapractica\algoritmos\tp_diccionario-main\tp_diccionario\lista.c
+	"lista.h"
+
+1761761664 c:\users\argentech.desktop-6m4kgn3.000\desktop\agustín\cursos programación\codeblock\programapractica\algoritmos\tp_diccionario-main\tp_diccionario\lista.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1761768356 source:c:\users\argentech.desktop-6m4kgn3.000\desktop\agustín\cursos programación\codeblock\programapractica\algoritmos\tp_diccionario-main\tp_diccionario\main.c
+	"FuncionesDiccionario.h"
+
+1761764273 c:\users\argentech.desktop-6m4kgn3.000\desktop\agustín\cursos programación\codeblock\programapractica\algoritmos\tp_diccionario-main\tp_diccionario\funcionesdiccionario.h
+	<stdio.h>
+	<stdlib.h>
+	"lista.h"
+
+1761768356 source:c:\users\argentech.desktop-6m4kgn3.000\desktop\agustín\cursos programación\codeblock\programapractica\algoritmos\tp_diccionario-main\tp_diccionario\procesadortexto.c
+	"ProcesadorTexto.h"
+
+1761767572 c:\users\argentech.desktop-6m4kgn3.000\desktop\agustín\cursos programación\codeblock\programapractica\algoritmos\tp_diccionario-main\tp_diccionario\procesadortexto.h
+	"FuncionesDiccionario.h"
+	<string.h>
+	<ctype.h>
+
+1761768498 source:c:\users\argentech.desktop-6m4kgn3.000\desktop\agustín\cursos programación\codeblock\programapractica\algoritmos\tp_diccionario-main\tp_diccionario\funcionesdiccionario.c
+	"FuncionesDiccionario.h"
+	"Lista.h"
+

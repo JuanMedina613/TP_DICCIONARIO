@@ -1,4 +1,5 @@
 #include "FuncionesDiccionario.h"
+#include "Lista.h"
 
 int crear_dic(tDiccionario *pd, size_t capacidad)
 {
@@ -101,6 +102,48 @@ int poner_dic(tDiccionario *pd, const void *valor, size_t tamDato, const char *c
     }
 
     return TODO_OKEY;
+}
+///===============================================================================//
+
+///Función auxiliar para liberar la memoria dinámica dentro de un sDato (la clave y el valor) antes de que el nodo de la lista sea liberado.
+void liberar_dato_dic(void *info)
+{
+    sDato *dato = (sDato *)info;
+
+    if(dato->clave)
+        free(dato->clave);
+    if(dato->valor)
+        free(dato->valor);
+}
+///===============================================================================//
+int sacar_dic(tDiccionario *pd, void *destino, size_t cant, const char *claveBusqueda, int (*cmp)(const void *,const void *))
+{
+    size_t pos;
+    tLista *pLista;
+    int resultado;
+
+    if(!pd || !pd->lista)
+        return VACIO;
+
+    // 1. Calcular la posición (hash)
+    pos = hashDiccionario(claveBusqueda) % pd->capacidad;
+    pLista = (pd->lista + pos); // Puntero a la lista en el bucket
+
+    // 2. Buscar y sacar el nodo de la lista
+    resultado = listaSacarPorContenido(pLista, destino, cant, (const void *)claveBusqueda, cmp, liberar_dato_dic);
+
+    return (resultado == TODO_OK) ? TODO_OKEY : resultado;
+}
+///===============================================================================//
+int cmpClaveBusqueda(const void *v1, const void *v2)
+{
+    // v1 es el sDato* que está dentro del nodo de la lista
+    const sDato *dato_nodo = (const sDato *)v1;
+
+    // v2 es el puntero a la cadena de caracteres (claveBusqueda) que pasamos directamente
+    const char *clave_busqueda = (const char *)v2;
+
+    return strcmp(dato_nodo->clave, clave_busqueda);
 }
 ///===============================================================================//
 /*

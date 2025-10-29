@@ -50,6 +50,9 @@ Lo que devuelve buscarLista (La posición del nodo que tiene esa clave) se envía 
 Se reduce la capacidad en 1
 */
 
+void liberar_dato_dic(void *info);
+int cmpClaveBusqueda(const void *v1, const void *v2);
+
 int recorrer_dic(tDiccionario *pd, void (*accion)(void *, void *));
 
 /*

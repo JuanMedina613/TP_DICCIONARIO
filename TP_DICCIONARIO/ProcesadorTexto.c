@@ -45,6 +45,42 @@ int contarAparicionesPalabra(tDiccionario* pd)
     return cont;
 }
 ///===============================================================================//
+size_t contarSignos(tDiccionario *pd)
+{
+    size_t acum = 0;
+    size_t aux;
+
+    if(!pd || !pd->lista)
+    {
+        return 0; // Se retorna 0 si está vacío
+    }
+
+    // Recorrer el vector principal
+    for(aux = 0; aux < pd->capacidad; aux++)
+    {
+        // Llamar a listaRecorrer con la acción que suma solo los signos
+        listaRecorrer(pd->lista + aux, sumarSignosDic, &acum);
+    }
+
+    return acum;
+}
+///===============================================================================//
+void sumarSignosDic(void *DatoDiccionario, void *destino)
+{
+    sDato *elemento = (sDato *)DatoDiccionario;
+    size_t *acum = (size_t *)destino;
+
+    // Asumimos que la clave es un solo caracter (signo, espacio o letra)
+    char c = *(char *)elemento->clave;
+
+    // Si la clave NO es una letra Y NO es un espacio, la consideramos un "signo" o caracter especial
+    if (!isalpha(c) && c != ' ')
+    {
+        // Sumar el contador de apariciones de este signo
+        (*acum) += *(int *)(elemento->valor);
+    }
+}
+///===============================================================================//
 int seleccionarArchivo(tDiccionario*pd)
 {
     FILE *pf;
@@ -57,9 +93,8 @@ int seleccionarArchivo(tDiccionario*pd)
         scanf("%d",&nroarch);
         if(nroarch>4 || nroarch<1)
             printf("\nNumero de archivo invalido, ingrese un numero valido(del 1 al 4):\n");
-    }
-    while(nroarch>4 || nroarch<1);
-    switch (nroarch)
+    }while(nroarch>4 || nroarch<1);
+    switch(nroarch)
     {
         case 1: strcpy(nombreArchivo, "1.txt");
         break;
@@ -156,4 +191,82 @@ int TrozaryGuardarArchivo(char *linea,sDato *dato,tDiccionario *pd)
         // El if se hace ya que, si estamos parados al principio no se puede hacer dir + 1 ya que nos comeriamos una letra
      }
     return 1;
+}
+///===============================================================================//
+void menu(tDiccionario *pd)
+{
+    int opcion = 0;
+    size_t total_palabras;
+    size_t total_signos;
+    char palabra_busqueda[MAXLINE];
+    int* apariciones;
+
+    // Paso 1: Ingresar y cargar el archivo
+    printf("--- PROCESADOR DE TEXTO V1.0 ---\n");
+    if(seleccionarArchivo(pd) != TODO_OK)
+    {
+        printf("\nError fatal: No se pudo cargar el archivo. Saliendo del programa.\n");
+        return;
+    }
+
+    printf("\nArchivo cargado y diccionario poblado con exito.\n");
+
+    // Bucle del menú
+    do
+    {
+        printf("\n============================================\n");
+        printf("               MENU DE ANALISIS\n");
+        printf("============================================\n");
+        printf("1. Mostrar estadisticas generales (Palabras y Signos)\n");
+        printf("2. Mostrar listado de apariciones por palabra (Recorrer Diccionario)\n");
+        printf("3. Buscar apariciones de una palabra en particular\n");
+        printf("0. Salir\n");
+        printf("Ingrese una opción: ");
+
+        if(scanf("%d", &opcion) != 1)
+        {
+            opcion = -1; // Forzar un valor inválido si la entrada no es un número
+            while(getchar() != '\n'); // Limpiar el buffer de entrada
+        }
+
+        switch(opcion)
+        {
+            case 1:
+                printf("\n--- Estadísticas Generales ---\n");
+                // Implementar función para contar espacios si se necesita, sino se puede omitir
+                total_palabras = contarPalabras(pd);
+                total_signos = contarSignos(pd);
+
+                printf("Cantidad total de palabras: %zu\n", total_palabras);
+                printf("Cantidad total de signos y caracteres especiales: %zu\n", total_signos);
+                break;
+
+            case 2:
+                printf("\n--- Listado de Apariciones (Recorrido del Diccionario) ---\n");
+                // Debes implementar una función de acción que imprima:
+                // void imprimirDato(void *DatoDiccionario, void *p_extra)
+                // y luego llamar: recorrer_dic(pd, imprimirDato);
+                printf("Funcion recorrer_dic y la accion de impresion pendientes de implementacion.\n");
+                break;
+
+            case 3:
+                printf("\n--- Busqueda de Palabra Especifica ---\n");
+                printf("Ingrese la palabra a buscar: ");
+                scanf("%s", palabra_busqueda);
+                // Aquí usarías obtener_dic para buscar la clave
+                // Necesitas una variable 'int apariciones_count = 0;'
+                // obtener_dic(pd, &apariciones_count, sizeof(int), palabra_busqueda, cmpClaveBusqueda);
+                printf("Funcion obtener_dic pendiente de implementacion.\n");
+                break;
+
+            case 0:
+                printf("\nSaliendo del procesador de texto. Destruyendo diccionario...\n");
+                destruir_dic(pd);
+                break;
+
+            default:
+                printf("\nOpcion inválida. Intente de nuevo.\n");
+                break;
+        }
+    }while(opcion != 0);
 }
