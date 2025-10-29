@@ -1,14 +1,18 @@
 #ifndef PROCESADORTEXTO_H_INCLUDED
 #define PROCESADORTEXTO_H_INCLUDED
 #include "FuncionesDiccionario.h"
+#define MAXLINE 1024
+#include <string.h>
+#include <ctype.h>
 
 size_t contarPalabras(tDiccionario *pd);
 //contarEspacios
 //contarSignos
 int contarAparicionesPalabra(tDiccionario* pd);
-//ingresarArchivo
-//cargarDiccionarioDeArchivo
+int seleccionarArchivo(tDiccionario*pd);
+int cargarArchivoEnDiccionario(tDiccionario* pd,FILE *pf);
+int TrozaryGuardarArchivo(char *linea,sDato *dato,tDiccionario *pd);
+void actValorSumar(void *actual, void *nuevo);
 //menu
-///PREGUNTAR SI ES CONSOLA O INTERFAZ DE USUARIO TIPO APP
 
 #endif // PROCESADORTEXTO_H_INCLUDED

@@ -9,7 +9,7 @@ int crear_dic(tDiccionario *pd, size_t capacidad)
     tLista *aux = pd->lista;
     while(aux < pd->lista + capacidad)
     {
-        listaCrear(aux);
+        crearLista(aux);
         aux++;
     }
     return TODO_OKEY;
@@ -22,7 +22,7 @@ int destruir_dic(tDiccionario *pd)
     tLista* aux = pd->lista;
     while(aux < pd->lista + pd->capacidad)
     {
-        listaDestruir(aux);
+        vaciarLista(aux);
         aux++;
     }
     free(pd->lista);

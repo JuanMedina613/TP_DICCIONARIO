@@ -19,20 +19,15 @@ typedef struct sNodo
 
 typedef tNodo* tLista;
 
-int cmpINT(const void *v1, const void*v2);
+int cmp(const void *a , const void* b);
 void actSumarDuplicados(const void *v1, void *v2);
 
-void listaCrear(tLista *pLista);
-void listaDestruir(tLista *pLista);
-int listaInsertarPri(tLista *pLista, const void* dato, size_t tamDato);
-int listaInsertarUlt(tLista *pLista, const void* dato, size_t tamDato);
-int listaSacar(tLista *pLista, void *destino, size_t cant);
-int listaVacia(const tLista *pLista);
-int listaInsertarPos(tLista *pLista, const void* dato, size_t tamDato, size_t pos);
-int listaInsertarOrdConDup(tLista *pLista, const void* dato, size_t tamDato, int (*cmp)(const void *, const void*));
-int listaInsertarOrdSinDup(tLista *pLista, const void* dato, size_t tamDato, int (*cmp)(const void *, const void*));
-int listaInsertarActDup(tLista *pLista, const void *dato, size_t tamDato, int (*cmp)(const void *, const void*), void (*accion)(void *, void*));
-int listaOrdenarSeleccion(tLista *pLista, int cmp(const void*, const void*));
+void crearLista(tLista *p);
+void vaciarLista(tLista *p);
+
 int listaRecorrer(tLista *pLista, void (*accion)(void *, void*), void *p);
+int listaBuscarPos(tLista *p, void* dato, int (*cmp)(const void *, const void*));
+int listaInsertarActDup(tLista *pLista, const void *dato, size_t tamDato, int (*cmp)(const void *, const void*), void (*accion)(void *, void*));
+
 
 #endif // LISTA_H_INCLUDED

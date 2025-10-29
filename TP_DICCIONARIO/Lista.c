@@ -1,195 +1,8 @@
 #include "lista.h"
 
-void listaCrear(tLista *pLista)
+void crearLista(tLista *p)
 {
-    *pLista = NULL;
-
-}
-
-int listaSacar(tLista *pLista, void *destino, size_t cant)
-{
-    tNodo *nodo = *pLista;
-
-    if(!*pLista)
-        return ERR;
-
-    memcpy(destino, nodo->info ,MIN(cant, nodo->tamInfo));
-    *pLista = nodo->sig;
-    free(nodo);
-    return TODO_OK;
-}
-
-int listaVacia(const tLista *pLista)
-{
-    return *pLista == NULL;
-}
-
-void listaDestruir(tLista *pLista)
-{
-    tNodo *elim = *pLista;
-    while(*pLista)
-    {
-        *pLista = elim->sig;
-        free(elim);
-        elim = *pLista;
-    }
-}
-
-int listaLlena(const tLista *pLista, size_t cantBytes)
-{
-    tNodo *nodo = (tNodo *)malloc(sizeof(tNodo) + cantBytes);
-    free(nodo);
-    if(!nodo)
-        return SIN_MEM;
-    else
-        return TODO_OK;
-}
-
-int listaInsertarPri(tLista *pLista, const void* dato, size_t tamDato)
-{
-    tNodo *nodo = (tNodo *)malloc(sizeof(tNodo)+tamDato);
-    if(!nodo)
-        return SIN_MEM;
-
-    nodo->info = nodo + 1;
-
-    memcpy(nodo->info, dato, tamDato);
-    nodo->tamInfo = tamDato;
-    nodo->sig = *pLista;
-    *pLista = nodo;
-
-    return TODO_OK;
-}
-
-int listaInsertarUlt(tLista *pLista, const void* dato, size_t tamDato)
-{
-    tNodo *nodo = (tNodo *)malloc(sizeof(tNodo) + tamDato);
-    if(!nodo)
-        return SIN_MEM;
-
-    while(*pLista)
-    {
-        pLista = &(*pLista)->sig;
-    }
-
-    nodo->info = nodo+1;
-
-    memcpy(nodo->info,dato,tamDato);
-    nodo->tamInfo=tamDato;
-    nodo->sig = NULL;
-    *pLista = nodo;
-
-    return TODO_OK;
-}
-
-int listaInsertarPos(tLista *pLista, const void* dato, size_t tamDato, size_t pos)
-{
-    tNodo *nodo = (tNodo *)malloc(sizeof(tNodo) + tamDato);
-    size_t aux = 0;
-
-    if(!nodo)
-        return SIN_MEM;
-    if(pos < 0)
-    {
-        free(nodo);
-        return ERR;
-    }
-
-    while(pos != aux && *pLista)
-    {
-        aux++;
-        pLista = &(*pLista)->sig;
-    }
-
-    nodo->tamInfo = tamDato;
-    nodo->info = nodo +1;
-    memcpy(nodo->info,dato,tamDato);
-    nodo->sig = *pLista;
-    *pLista = nodo;
-
-    return TODO_OK;
-}
-
-int cmpINT(const void *v1, const void*v2)
-{
-    const int *aux1 = (const int *)v1;
-    const int *aux2 = (const int *)v2;
-
-    if (*aux1 < *aux2)
-        return -1;
-    if (*aux2 < *aux1)
-        return 1;
-    return 0;
-
-}
-
-int listaInsertarOrdConDup(tLista *pLista, const void* dato, size_t tamDato, int (*cmp)(const void *, const void*))
-{
-    tNodo *nodoB = *pLista;
-    tNodo *ant = NULL;
-    tNodo *insertar = (tNodo *)malloc(tamDato + sizeof(tNodo));
-
-    if(!insertar)
-        return SIN_MEM;
-
-    insertar->info = insertar+1;
-    insertar->tamInfo = tamDato;
-    memcpy(insertar->info, dato, tamDato);
-
-    while(nodoB && cmp(dato, nodoB->info)>0)
-    {
-        ant = nodoB;
-        nodoB = nodoB->sig;
-    }
-
-    insertar->sig = nodoB;
-    if(!ant)
-        *pLista = insertar;
-    else
-        ant->sig = insertar;
-
-    return TODO_OK;
-}
-
-int listaInsertarOrdSinDup(tLista *pLista, const void* dato, size_t tamDato, int (*cmp)(const void *, const void*))
-{
-    tNodo *nodoB = *pLista;
-    tNodo *ant = NULL;
-    tNodo *insertar = (tNodo *)malloc(tamDato + sizeof(tNodo));
-
-    if(!insertar)
-        return SIN_MEM;
-
-    insertar->info = insertar+1;
-    insertar->tamInfo = tamDato;
-    memcpy(insertar->info, dato, tamDato);
-
-    while(nodoB && cmp(dato, nodoB->info)>0)
-    {
-        ant = nodoB;
-        nodoB = nodoB->sig;
-    }
-
-    if(nodoB && cmp(dato, nodoB->info)==0)
-    {
-        free(insertar);
-        return DUPLICADO;
-    }
-
-    insertar->sig = nodoB;
-    if(!ant)
-        *pLista = insertar;
-    else
-        ant->sig = insertar;
-
-    return TODO_OK;
-}
-
-void actSumarDuplicados(const void *v1, void *v2)
-{
-    const int *d1 = (const int *)v1;
-    int *d2 = (int *)v2;
-    *d2 += *d1;
+    *p = NULL;
 }
 
 int listaInsertarActDup(tLista *pLista, const void *dato, size_t tamDato, int (*cmp)(const void *, const void*), void (*accion)(void *, void*))
@@ -234,51 +47,47 @@ int listaInsertarActDup(tLista *pLista, const void *dato, size_t tamDato, int (*
     return TODO_OK;
 }
 
-int listaOrdenarSeleccion(tLista *pLista, int cmp(const void*, const void*))
+void vaciarLista(tLista *p)
 {
-    tNodo *min = *pLista;
-    tNodo *act = *pLista;
-    tNodo *ant = NULL;
-    tNodo *antAux = NULL;
-    if(!*pLista)
-        return ERR;
-
-    while(*pLista)
+    while(*p)
     {
-        min = *pLista;
-        act = *pLista;
-        ant = NULL;
-        antAux = NULL;
+        tNodo *aux = *p;
 
-        while(act)
-        {
-            if(cmp(min->info, act->info) > 0)
-            {
-                antAux = ant;
-                min = act;
-            }
-            ant = act;
-            act = act->sig;
-        }
+        *p = aux->sig;
+        free(aux->info);
+        free(aux);
+    }
+}
+int listaBuscarPos(tLista *p, void* dato, int (*cmp)(const void *, const void*))
+{
+    int pos = 0;
+    while(*p)
+    {
+        if(cmp((*p)->info,dato) == 0) // 0 lo encontro, return pos
+            return pos;
+        p = &(*p)->sig;
+        pos++;
+    }
+    return -1; // no lo encontro
+}
 
-        if(min != *pLista)
-        {
-            if(antAux)
-                antAux->sig = min->sig;
+int listaRecorrer(tLista *pLista, void (*accion)(void *, void*), void *p)
+{
+    tNodo *actual = *pLista;
 
-            act = *pLista;
-            *pLista = min;
-            min->sig = act;
-        }
+    if(!actual)
+        return ERR;
+    while(actual)
+    {
+        accion(actual->info,p);
 
-        pLista = &((*pLista)->sig);
+        actual = actual->sig;
     }
 
     return TODO_OK;
 }
 
-int listaRecorrer(tLista *pLista, void (*accion)(void *, void*), void *p)
+int cmp(const void *a , const void* b)
 {
-
-    return TODO_OK;
+    return (*(int*)a - *(int*)b); // si devuelve negativo, b es mas grande;si devuelve positivo a es mas grande
 }

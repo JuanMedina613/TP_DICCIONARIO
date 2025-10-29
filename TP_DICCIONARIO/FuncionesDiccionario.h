@@ -66,4 +66,5 @@ Capacidad y cant pasan a ser 0
 
 size_t hashDiccionario(const char* str);
 
+
 #endif // FUNCIONESDICCIONARIO_H_INCLUDED
