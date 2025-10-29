@@ -46,7 +46,7 @@ int contarAparicionesPalabra(tDiccionario* pd)
 }
 ///===============================================================================//
 int seleccionarArchivo(tDiccionario*pd)
-{   // (tolower(*arch) > 100 || tolower(*arch) < 97)
+{
     FILE *pf;
     int nroarch,res;
     char nombreArchivo[20];
@@ -92,13 +92,28 @@ int cargarArchivoEnDiccionario(tDiccionario* pd,FILE *pf)
     char linea[MAXLINE];
     sDato aux;
 
-    aux.valor = 0;
+    if(!(aux.clave = malloc(MAXLINE)) || !(aux.valor = malloc(sizeof(int))))
+    {
+        free(aux.clave);
+        free(aux.valor);
+        return ERROR1;
+    }
+
+    *(int*)aux.valor = 1;
+
 
     while(fgets(linea,MAXLINE,pf))
     {
        if(!TrozaryGuardarArchivo(linea,&aux,pd))
-            return ERROR1;
+       {
+           free(aux.clave);
+           free(aux.valor);
+           return ERROR1;
+       }
+
     }
+    free(aux.clave);
+    free(aux.valor);
     return TODO_OK;
 }
 ///===============================================================================//
@@ -112,12 +127,11 @@ int TrozaryGuardarArchivo(char *linea,sDato *dato,tDiccionario *pd)
 
     while(dir != linea)
     {
-        while((dir - 1) > linea && (tolower(*(dir - 1 )) < 97 || tolower(*(dir - 1)) > 122) && *(dir - 1)!= ' ') // si dir-1 no esta fuera de la linea(existe) y dir-1 no es un caracter y no es espacio vacio insertamos el caracter
+        while ((dir - 1) > linea && !isalpha(*(dir - 1)))// si dir-1 no esta fuera de la linea(existe) y dir-1 no es un caracter y no es espacio vacio insertamos el caracter
             {
                 dir = dir - 1;
                 sscanf(dir,"%c",dato->clave);
                 dato->tam = sizeof(char);
-                dato->valor += 1;
                 poner_dic(pd,dato->valor,sizeof(char),dato->clave,actValorSumar); // guardamos el caracter para no perderlo
                 *dir = '\0'; // una vez guardado el caracter, \0 para seguir trozando
             }
@@ -126,11 +140,18 @@ int TrozaryGuardarArchivo(char *linea,sDato *dato,tDiccionario *pd)
             dir = linea; // En caso de que retorne NULL porque no hay espacios, significa que llegamos a fin de cadena, por ende igualamos
             strcpy(dato->clave,dir); // copio la palabra
         }else
-            strcpy(dato->clave,dir + 1); // copio la palabra
+        {
+            sscanf(dir,"%c",dato->clave); // guardamos el espacio
+            dato->tam = sizeof(char);
+            poner_dic(pd,dato->valor,sizeof(char),dato->clave,actValorSumar);
 
-        dato->tam = sizeof(strlen(dato->clave));
-        dato->valor += 1;
+            strcpy(dato->clave,dir + 1); // copio la palabra
+        }
+
+
+        dato->tam = strlen(dato->clave);
         poner_dic(pd,dato->valor,dato->tam,dato->clave,actValorSumar); // guardo en diccionario para no perder la palabra
+
         *dir = '\0'; // continuo poniendo \0
         // El if se hace ya que, si estamos parados al principio no se puede hacer dir + 1 ya que nos comeriamos una letra
      }
