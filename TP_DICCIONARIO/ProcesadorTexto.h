@@ -5,7 +5,7 @@
 size_t contarPalabras(tDiccionario *pd);
 //contarEspacios
 //contarSignos
-//contarAparicionesPalabra
+int contarAparicionesPalabra(tDiccionario* pd);
 //ingresarArchivo
 //cargarDiccionarioDeArchivo
 //menu

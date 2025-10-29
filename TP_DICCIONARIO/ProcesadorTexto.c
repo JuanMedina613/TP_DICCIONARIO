@@ -8,7 +8,7 @@ void sumarValoresDic(void *DatoDiccionario, void *destino)
     if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))
     (*acum) += *(int *)(elemento->valor);
 }
-
+///===============================================================================//
 size_t contarPalabras(tDiccionario *pd)
 {
     size_t acum = 0;
@@ -25,4 +25,23 @@ size_t contarPalabras(tDiccionario *pd)
 
     return acum;
 }
-
+///===============================================================================//
+int contarAparicionesPalabra(tDiccionario* pd)
+{
+    int cont = 0;
+    tLista* fin = pd->lista + pd->capacidad;
+    tLista* ini = pd->lista;
+    while (ini < fin)
+    {
+        tNodo* nodo = *ini;              // <-- antes intentabas usar (*ini)->sig directamente
+        while (nodo != NULL)            // <-- reemplaza el while(!((*ini)->sig))
+        {
+            sDato* dato = (sDato*)nodo->info;   // <-- antes usabas ((*ini)->sig->info)
+            cont += *(int*)dato->valor;         // casteo y sumo
+            nodo = nodo->sig;            // <-- avanzar la lista, esto antes no estaba
+        }
+        ini++;  // siguiente
+    }
+    return cont;
+}
+///===============================================================================//

@@ -14,7 +14,7 @@ int crear_dic(tDiccionario *pd, size_t capacidad)
     }
     return TODO_OKEY;
 }
-//====================================================//
+///===============================================================================//
 int destruir_dic(tDiccionario *pd)
 {
     if(!pd || !pd->lista)
@@ -30,7 +30,7 @@ int destruir_dic(tDiccionario *pd)
     pd->capacidad = 0;
     return TODO_OKEY;
 }
-//====================================================//
+///===============================================================================//
 size_t hashDiccionario(const char* str)
 {
     size_t hash = 1;
@@ -41,7 +41,7 @@ size_t hashDiccionario(const char* str)
 
 }
 
-//====================================================//
+///===============================================================================//
 int cmpClave(const void *v1, const void *v2)
 {
     sDato *d1 = (sDato *)v1;
@@ -50,7 +50,7 @@ int cmpClave(const void *v1, const void *v2)
     return strcmp(d1->clave, d2->clave);
 }
 
-//====================================================//
+///===============================================================================//
 void actValorReemplazo(void *actual, void *nuevo)
 {
     sDato *act = (sDato *)actual;
@@ -64,7 +64,7 @@ void actValorReemplazo(void *actual, void *nuevo)
     free(act->valor);
     act->valor = aux;
 }
-//====================================================//
+///===============================================================================//
 void actValorSumar(void *actual, void *nuevo)
 {
     sDato *act = (sDato *)actual;
@@ -72,7 +72,7 @@ void actValorSumar(void *actual, void *nuevo)
     *(int *)act->valor += 1;
 
 }
-//====================================================//
+///===============================================================================//
 int poner_dic(tDiccionario *pd, const void *valor, size_t tamDato, const char *clave, void (*accion)(void *, void *))
 {
     sDato nuevo;
@@ -102,7 +102,7 @@ int poner_dic(tDiccionario *pd, const void *valor, size_t tamDato, const char *c
 
     return TODO_OKEY;
 }
-
+///===============================================================================//
 /*
 Poner en 0 la cant
 Llamar a crearLista

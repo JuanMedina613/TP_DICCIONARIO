@@ -1,0 +1,20 @@
+# depslib dependency file v1.0
+1761703728 source:c:\users\administrator\documents\github\tp_diccionario\tp_diccionario\lista.c
+	"lista.h"
+
+1761703728 c:\users\administrator\documents\github\tp_diccionario\tp_diccionario\lista.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1761528188 source:c:\users\administrator\documents\github\tp_diccionario\tp_diccionario\main.c
+	"FuncionesDiccionario.h"
+
+1761703728 c:\users\administrator\documents\github\tp_diccionario\tp_diccionario\funcionesdiccionario.h
+	<stdio.h>
+	<stdlib.h>
+	"lista.h"
+
+1761704117 source:c:\users\administrator\documents\github\tp_diccionario\tp_diccionario\funcionesdiccionario.c
+	"FuncionesDiccionario.h"
+
