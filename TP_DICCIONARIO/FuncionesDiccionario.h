@@ -7,6 +7,7 @@
 #define ERROR1 0 //Problema relacionado a la Memoria
 #define TODO_OKEY 1 // TODO_OKEY JAJA
 #define VACIO 1
+#define NO_ENCONTRADA 0
 typedef struct
 {
     tLista *lista;

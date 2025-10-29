@@ -8,7 +8,8 @@
 size_t contarPalabras(tDiccionario *pd);
 //contarEspacios
 //contarSignos
-int contarAparicionesPalabra(tDiccionario* pd);
+void Listado_contarApariciones_de_Palabras(tDiccionario* pd);
+int contarApariciones_de_una_Palabra(tDiccionario* pd, const char* palabra);
 size_t contarSignos(tDiccionario *pd);
 void sumarSignosDic(void *DatoDiccionario, void *destino);
 int seleccionarArchivo(tDiccionario*pd);

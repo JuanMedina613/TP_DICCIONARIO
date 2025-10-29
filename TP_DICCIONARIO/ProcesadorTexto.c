@@ -52,9 +52,8 @@ size_t contarEspacios(tDiccionario *pd)
 
 }
 ///===============================================================================//
-int contarAparicionesPalabra(tDiccionario* pd)
+void Listado_contarApariciones_de_Palabras(tDiccionario* pd)
 {
-    int cont = 0;
     tLista* fin = pd->lista + pd->capacidad;
     tLista* ini = pd->lista;
     while (ini < fin)
@@ -63,12 +62,33 @@ int contarAparicionesPalabra(tDiccionario* pd)
         while (nodo != NULL)            // <-- reemplaza el while(!((*ini)->sig))
         {
             sDato* dato = (sDato*)nodo->info;   // <-- antes usabas ((*ini)->sig->info)
-            cont += *(int*)dato->valor;         // casteo y sumo
+            printf("\n'%s' cantidad de veces que se repite '%d'",dato->clave,*(int*)dato->valor);
             nodo = nodo->sig;            // <-- avanzar la lista, esto antes no estaba
         }
         ini++;  // siguiente
     }
-    return cont;
+}
+///===============================================================================//
+int contarApariciones_de_una_Palabra(tDiccionario* pd, const char* palabra)
+{
+    size_t pos = hashDiccionario(palabra) % pd->capacidad;
+    tLista* lista = pd->lista + pos;
+
+    // Si la lista esta vacia, la palabra no esta
+    if (*lista == NULL)
+        return NO_ENCONTRADA;
+
+    // Recorro los nodos de esa lista
+    tNodo* nodo = *lista;
+    while (nodo != NULL)
+    {
+        sDato* dato = (sDato*)nodo->info;
+
+        if (strcmp(dato->clave, palabra) == 0)
+            return *(int*) dato->valor;   // encontré la palabra, devuelvo el valor
+        nodo = nodo->sig;  // sigo buscando
+    }
+    return NO_ENCONTRADA;  // no se encontró la palabra
 }
 ///===============================================================================//
 size_t contarSignos(tDiccionario *pd)
