@@ -15,6 +15,6 @@ int seleccionarArchivo(tDiccionario*pd);
 int cargarArchivoEnDiccionario(tDiccionario* pd,FILE *pf);
 int TrozaryGuardarArchivo(char *linea,sDato *dato,tDiccionario *pd);
 void actValorSumar(void *actual, void *nuevo);
-//menu
+void menu(tDiccionario *pd);
 
 #endif // PROCESADORTEXTO_H_INCLUDED

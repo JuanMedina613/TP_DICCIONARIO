@@ -1,11 +1,11 @@
-#include "FuncionesDiccionario.h"
+#include "ProcesadorTexto.h"
 
 int main()
 {
     tDiccionario dic;
     crear_dic(&dic, 5);
 
-    menu(dic);
+    menu(&dic);
 
     return 0;
 }

@@ -79,6 +79,7 @@ void sumarSignosDic(void *DatoDiccionario, void *destino)
         // Sumar el contador de apariciones de este signo
         (*acum) += *(int *)(elemento->valor);
     }
+    //printf("\nPalabra %s valor %zu", elemento->clave, *(int *)elemento->valor);
 }
 ///===============================================================================//
 int seleccionarArchivo(tDiccionario*pd)
@@ -136,7 +137,6 @@ int cargarArchivoEnDiccionario(tDiccionario* pd,FILE *pf)
 
     *(int*)aux.valor = 1;
 
-
     while(fgets(linea,MAXLINE,pf))
     {
        if(!TrozaryGuardarArchivo(linea,&aux,pd))
@@ -145,7 +145,6 @@ int cargarArchivoEnDiccionario(tDiccionario* pd,FILE *pf)
            free(aux.valor);
            return ERROR1;
        }
-
     }
     free(aux.clave);
     free(aux.valor);
@@ -155,19 +154,24 @@ int cargarArchivoEnDiccionario(tDiccionario* pd,FILE *pf)
 int TrozaryGuardarArchivo(char *linea,sDato *dato,tDiccionario *pd)
 {
     char *dir;
-    if(!(dir = strrchr(linea,'\n')))
-            return ERROR1;
+    printf("\n%s", linea);
+    dir = strchr(linea,'\n');
+    if(!dir)
+        return ERROR1;
 
     *dir = '\0';
 
     while(dir != linea)
     {
+
         while ((dir - 1) > linea && !isalpha(*(dir - 1)))// si dir-1 no esta fuera de la linea(existe) y dir-1 no es un caracter y no es espacio vacio insertamos el caracter
             {
                 dir = dir - 1;
-                sscanf(dir,"%c",dato->clave);
+                *(dato->clave) = *dir;
+                *(dato->clave + 1) = '\0';
                 dato->tam = sizeof(char);
-                poner_dic(pd,dato->valor,sizeof(char),dato->clave,actValorSumar); // guardamos el caracter para no perderlo
+                poner_dic(pd,dato->valor,sizeof(int),dato->clave,actValorSumar); // guardamos el caracter para no perderlo
+
                 *dir = '\0'; // una vez guardado el caracter, \0 para seguir trozando
             }
         if(!(dir = strrchr(linea,' ')))
@@ -176,9 +180,10 @@ int TrozaryGuardarArchivo(char *linea,sDato *dato,tDiccionario *pd)
             strcpy(dato->clave,dir); // copio la palabra
         }else
         {
-            sscanf(dir,"%c",dato->clave); // guardamos el espacio
+            *(dato->clave) = *dir;
+            *(dato->clave + 1) = '\0';
             dato->tam = sizeof(char);
-            poner_dic(pd,dato->valor,sizeof(char),dato->clave,actValorSumar);
+            poner_dic(pd,dato->valor,sizeof(int),dato->clave,actValorSumar);
 
             strcpy(dato->clave,dir + 1); // copio la palabra
         }
@@ -190,6 +195,7 @@ int TrozaryGuardarArchivo(char *linea,sDato *dato,tDiccionario *pd)
         *dir = '\0'; // continuo poniendo \0
         // El if se hace ya que, si estamos parados al principio no se puede hacer dir + 1 ya que nos comeriamos una letra
      }
+
     return 1;
 }
 ///===============================================================================//
@@ -203,7 +209,7 @@ void menu(tDiccionario *pd)
 
     // Paso 1: Ingresar y cargar el archivo
     printf("--- PROCESADOR DE TEXTO V1.0 ---\n");
-    if(seleccionarArchivo(pd) != TODO_OK)
+    if(seleccionarArchivo(pd) != TODO_OKEY)
     {
         printf("\nError fatal: No se pudo cargar el archivo. Saliendo del programa.\n");
         return;

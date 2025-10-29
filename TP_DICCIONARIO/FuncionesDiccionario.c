@@ -35,9 +35,15 @@ int destruir_dic(tDiccionario *pd)
 size_t hashDiccionario(const char* str)
 {
     size_t hash = 1;
+    size_t aux = 0;
     int c;
-    while((c = *str))
+
+    while((c = *(str + aux)))
+    {
         hash = hash*33 + c;
+        aux+=1;
+    }
+
     return hash;
 
 }
@@ -94,6 +100,7 @@ int poner_dic(tDiccionario *pd, const void *valor, size_t tamDato, const char *c
 
     pos = hashDiccionario(clave) % pd->capacidad;
 
+    //printf("\nPoniendo %s", clave);
     if(!listaInsertarActDup((pd->lista + pos), &nuevo, sizeof(nuevo), cmpClave, accion))
     {
         free(nuevo.clave);
