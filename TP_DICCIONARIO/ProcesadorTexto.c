@@ -9,6 +9,16 @@ void sumarValoresDic(void *DatoDiccionario, void *destino)
         (*acum) += *(int *)(elemento->valor);
 }
 ///===============================================================================//
+void sumarEspaciosDic(void *dato, void *destino)
+{
+    sDato *elem = (sDato*)dato;
+    int * acum = (int*)destino;
+
+    if (elem->clave && strcmp(elem->clave, " ") == 0) // en la primer condicion verifico que exista la clave, luego comparo si es un espacio
+        (*acum) += *(int *)(elem->valor);
+}
+
+///===============================================================================//
 size_t contarPalabras(tDiccionario *pd)
 {
     size_t acum = 0;
@@ -24,6 +34,22 @@ size_t contarPalabras(tDiccionario *pd)
     }
 
     return acum;
+}
+///===============================================================================//
+size_t contarEspacios(tDiccionario *pd)
+{
+    size_t acum = 0;
+    size_t aux;
+
+    if(!pd || !pd->lista) // verifico que la lista no este vacia
+        return VACIO; // si no hay nada, retorno error
+
+    for(aux = 0; aux < pd->capacidad; aux++)
+    {
+        listaRecorrer(pd->lista + aux, sumarEspaciosDic, &acum);
+    }
+    return acum;
+
 }
 ///===============================================================================//
 int contarAparicionesPalabra(tDiccionario* pd)
