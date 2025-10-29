@@ -31,7 +31,7 @@ int poner_dic(tDiccionario *pd, const void *valor, size_t tamDato, const char *c
 
 /*
 Mediante una funcion hash%capacidad, se transforma la clave en una posicion, que es la que define en cual de todas las listas vamos a insertar
-Utilizamos la funcion accion para definir si reemplazamos el valor por el nuevo, o para sumar al contador de apariciones
+Utilizamos la funcion accion para definir si reemplazamos el valor por el nuevo, o para sumar al contador de apariciones.
 
 */
 
