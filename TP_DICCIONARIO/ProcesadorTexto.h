@@ -1,13 +1,13 @@
 #ifndef PROCESADORTEXTO_H_INCLUDED
 #define PROCESADORTEXTO_H_INCLUDED
 #include "FuncionesDiccionario.h"
-#define MAXLINE 1024
+#define MAXLINE 2048
 #include <string.h>
 #include <ctype.h>
 
 size_t contarPalabras(tDiccionario *pd);
-//contarEspacios
-//contarSignos
+size_t contarEspacios(tDiccionario *pd);
+int miEsAlpha(int c);
 void Listado_contarApariciones_de_Palabras(tDiccionario* pd);
 int contarApariciones_de_una_Palabra(tDiccionario* pd, const char* palabra);
 size_t contarSignos(tDiccionario *pd);

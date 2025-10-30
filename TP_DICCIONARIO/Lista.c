@@ -1,4 +1,5 @@
 #include "lista.h"
+#include "FuncionesDiccionario.h"
 
 void crearLista(tLista *p)
 {
@@ -18,6 +19,8 @@ int listaInsertarActDup(tLista *pLista, const void *dato, size_t tamDato, int (*
         free(insertar);
         return SIN_MEM;
     }
+
+    //printf("\nSe suma %s un total de %d\n", ((sDato *)(dato))->clave, *(int*)((sDato*)(dato))->valor);
 
     memcpy(nDato, dato, tamDato);
 
@@ -49,15 +52,15 @@ int listaInsertarActDup(tLista *pLista, const void *dato, size_t tamDato, int (*
 
 void vaciarLista(tLista *p)
 {
+    tNodo *aux = NULL;
     while(*p)
     {
-        tNodo *aux = *p;
-
+        aux = *p;
         *p = aux->sig;
-        free(aux->info);
         free(aux);
     }
 }
+
 int listaBuscarPos(tLista *p, void* dato, int (*cmp)(const void *, const void*))
 {
     int pos = 0;
@@ -77,7 +80,8 @@ int listaRecorrer(tLista *pLista, void (*accion)(void *, void*), void *p)
 
     if(!actual)
         return ERR;
-    while(actual)
+
+    while(actual != NULL)
     {
         accion(actual->info,p);
 

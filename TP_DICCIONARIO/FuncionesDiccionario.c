@@ -21,14 +21,24 @@ int destruir_dic(tDiccionario *pd)
     if(!pd || !pd->lista)
         return VACIO;
     tLista* aux = pd->lista;
+    tNodo* nodo = NULL;
     while(aux < pd->lista + pd->capacidad)
     {
+        nodo = *aux;
+        while(nodo)
+        {
+            liberar_dato_dic(nodo->info);
+            nodo = nodo->sig;
+        }
         vaciarLista(aux);
+
         aux++;
+
     }
     free(pd->lista);
     pd->lista = NULL;
     pd->capacidad = 0;
+
     return TODO_OKEY;
 }
 ///===============================================================================//
@@ -88,6 +98,7 @@ int poner_dic(tDiccionario *pd, const void *valor, size_t tamDato, const char *c
     if(!valor)
         return VACIO;
 
+    //printf("\nTotal de palabras hasta ahora: %zu",contarPalabras(pd));
     nuevo.tam = tamDato;
     nuevo.clave = (char *)malloc(strlen(clave)+1);
     nuevo.valor = malloc(tamDato);
@@ -99,7 +110,7 @@ int poner_dic(tDiccionario *pd, const void *valor, size_t tamDato, const char *c
     memcpy(nuevo.valor, valor, tamDato);
 
     pos = hashDiccionario(clave) % pd->capacidad;
-
+    //printf("\nSe suma %s un total de %d\n", clave, *(int*)valor);
     //printf("\nPoniendo %s", clave);
     if(!listaInsertarActDup((pd->lista + pos), &nuevo, sizeof(nuevo), cmpClave, accion))
     {

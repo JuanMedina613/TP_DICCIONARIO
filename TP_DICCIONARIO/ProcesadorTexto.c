@@ -4,9 +4,11 @@ void sumarValoresDic(void *DatoDiccionario, void *destino)
 {
     sDato *elemento = (sDato *)DatoDiccionario;
     int * acum = (int *)destino;
-    char c = *(char *)elemento->clave;
-    if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))
+    char c = *elemento->clave;
+    if (miEsAlpha((int)c))
+    {
         (*acum) += *(int *)(elemento->valor);
+    }
 }
 ///===============================================================================//
 void sumarEspaciosDic(void *dato, void *destino)
@@ -39,14 +41,14 @@ size_t contarPalabras(tDiccionario *pd)
 size_t contarEspacios(tDiccionario *pd)
 {
     size_t acum = 0;
-    size_t aux;
+    tLista *ini = pd->lista;
 
     if(!pd || !pd->lista) // verifico que la lista no este vacia
         return VACIO; // si no hay nada, retorno error
 
-    for(aux = 0; aux < pd->capacidad; aux++)
+    for(; ini < pd->lista + pd->capacidad; ini++)
     {
-        listaRecorrer(pd->lista + aux, sumarEspaciosDic, &acum);
+        listaRecorrer(ini, sumarEspaciosDic, &acum);
     }
     return acum;
 
@@ -120,7 +122,7 @@ void sumarSignosDic(void *DatoDiccionario, void *destino)
     char c = *(char *)elemento->clave;
 
     // Si la clave NO es una letra Y NO es un espacio, la consideramos un "signo" o caracter especial
-    if (!isalpha(c) && c != ' ')
+    if (!miEsAlpha(c) && c != ' ')
     {
         // Sumar el contador de apariciones de este signo
         (*acum) += *(int *)(elemento->valor);
@@ -174,16 +176,17 @@ int cargarArchivoEnDiccionario(tDiccionario* pd,FILE *pf)
     char linea[MAXLINE];
     sDato aux;
 
-    if(!(aux.clave = malloc(MAXLINE)) || !(aux.valor = malloc(sizeof(int))))
+    aux.tam = sizeof(size_t);
+    if(!(aux.clave = (char *)malloc(MAXLINE)) || !(aux.valor = malloc(sizeof(size_t))))
     {
         free(aux.clave);
         free(aux.valor);
         return ERROR1;
     }
 
-    *(int*)aux.valor = 1;
+    *(size_t*)aux.valor = 1;
 
-    while(fgets(linea,MAXLINE,pf))
+    while(linea != '\0' && fgets(linea,MAXLINE,pf))
     {
        if(!TrozaryGuardarArchivo(linea,&aux,pd))
        {
@@ -199,8 +202,10 @@ int cargarArchivoEnDiccionario(tDiccionario* pd,FILE *pf)
 ///===============================================================================//
 int TrozaryGuardarArchivo(char *linea,sDato *dato,tDiccionario *pd)
 {
-    char *dir;
+    char *dir = NULL;
+
     printf("\n%s", linea);
+
     dir = strchr(linea,'\n');
     if(!dir)
         return ERROR1;
@@ -210,13 +215,14 @@ int TrozaryGuardarArchivo(char *linea,sDato *dato,tDiccionario *pd)
     while(dir != linea)
     {
 
-        while ((dir - 1) > linea && !isalpha(*(dir - 1)))// si dir-1 no esta fuera de la linea(existe) y dir-1 no es un caracter y no es espacio vacio insertamos el caracter
+        while ((dir - 1) > linea && !miEsAlpha(*(dir - 1)))// si dir-1 no esta fuera de la linea(existe) y dir-1 no es un caracter y no es espacio vacio insertamos el caracter
             {
                 dir = dir - 1;
                 *(dato->clave) = *dir;
                 *(dato->clave + 1) = '\0';
-                dato->tam = sizeof(char);
-                poner_dic(pd,dato->valor,sizeof(int),dato->clave,actValorSumar); // guardamos el caracter para no perderlo
+                dato->tam = sizeof(size_t);
+                //printf("\nSe suma %s un total de %d\n", dato->clave, *(int*)dato->valor);
+                poner_dic(pd,dato->valor,dato->tam,dato->clave,actValorSumar); // guardamos el caracter para no perderlo
 
                 *dir = '\0'; // una vez guardado el caracter, \0 para seguir trozando
             }
@@ -228,14 +234,16 @@ int TrozaryGuardarArchivo(char *linea,sDato *dato,tDiccionario *pd)
         {
             *(dato->clave) = *dir;
             *(dato->clave + 1) = '\0';
-            dato->tam = sizeof(char);
-            poner_dic(pd,dato->valor,sizeof(int),dato->clave,actValorSumar);
+            dato->tam = sizeof(size_t);
+            //printf("\nSe suma %s un total de %d\n", dato->clave, *(int*)dato->valor);
+            poner_dic(pd,dato->valor,dato->tam,dato->clave,actValorSumar);
 
             strcpy(dato->clave,dir + 1); // copio la palabra
         }
 
 
-        dato->tam = strlen(dato->clave);
+        dato->tam = sizeof(size_t);
+        //printf("\nSe suma %s un total de %d\n", dato->clave, *(int*)dato->valor);
         poner_dic(pd,dato->valor,dato->tam,dato->clave,actValorSumar); // guardo en diccionario para no perder la palabra
 
         *dir = '\0'; // continuo poniendo \0
@@ -250,8 +258,9 @@ void menu(tDiccionario *pd)
     int opcion = 0;
     size_t total_palabras;
     size_t total_signos;
+    size_t total_espacios;
+    int aparicionesPalabra;
     char palabra_busqueda[MAXLINE];
-    int* apariciones;
 
     // Paso 1: Ingresar y cargar el archivo
     printf("--- PROCESADOR DE TEXTO V1.0 ---\n");
@@ -269,7 +278,7 @@ void menu(tDiccionario *pd)
         printf("\n============================================\n");
         printf("               MENU DE ANALISIS\n");
         printf("============================================\n");
-        printf("1. Mostrar estadisticas generales (Palabras y Signos)\n");
+        printf("1. Mostrar estadisticas generales (Palabras, Signos, y Espacios)\n");
         printf("2. Mostrar listado de apariciones por palabra (Recorrer Diccionario)\n");
         printf("3. Buscar apariciones de una palabra en particular\n");
         printf("0. Salir\n");
@@ -285,10 +294,11 @@ void menu(tDiccionario *pd)
         {
             case 1:
                 printf("\n--- Estadísticas Generales ---\n");
-                // Implementar función para contar espacios si se necesita, sino se puede omitir
+                total_espacios = contarEspacios(pd);
                 total_palabras = contarPalabras(pd);
                 total_signos = contarSignos(pd);
                 printf("Cantidad total de palabras: %zu\n", total_palabras);
+                printf("Cantidad total de espacios: %zu\n", total_espacios);
                 printf("Cantidad total de signos y caracteres especiales: %zu\n", total_signos);
 
                 break;
@@ -307,8 +317,9 @@ void menu(tDiccionario *pd)
                 scanf("%s", palabra_busqueda);
                 // Aquí usarías obtener_dic para buscar la clave
                 // Necesitas una variable 'int apariciones_count = 0;'
-                // obtener_dic(pd, &apariciones_count, sizeof(int), palabra_busqueda, cmpClaveBusqueda);
-                printf("Funcion obtener_dic pendiente de implementacion.\n");
+                //obtener_dic(pd, &apariciones_count, sizeof(int), palabra_busqueda, cmpClaveBusqueda);
+                aparicionesPalabra = contarApariciones_de_una_Palabra(pd,palabra_busqueda);
+                printf("La palabra \"%s\" aparece %d veces.\n", palabra_busqueda, aparicionesPalabra);
                 break;
 
             case 0:
@@ -321,4 +332,25 @@ void menu(tDiccionario *pd)
                 break;
         }
     }while(opcion != 0);
+}
+
+int miEsAlpha(int c)
+{
+    // Letras normales A-Z / a-z
+    if (isalpha(c))
+        return 1;
+
+    // Vocales acentuadas básicas (á, é, í, ó, ú y sus mayúsculas)
+    switch (c)
+    {
+        case 0xE1: case 0xC1: // á Á
+        case 0xE9: case 0xC9: // é É
+        case 0xED: case 0xCD: // í Í
+        case 0xF3: case 0xD3: // ó Ó
+        case 0xFA: case 0xDA: // ú Ú
+        case 0xF1: case 0xD1:
+            return 1;
+        default:
+            return 0;
+    }
 }

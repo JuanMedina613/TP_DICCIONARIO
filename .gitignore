@@ -1,3 +1,9 @@
 TP_DICCIONARIO/bin/Debug/TP_DICCIONARIO.exe
 *.o
 TP_DICCIONARIO/TP_DICCIONARIO.layout
+TP_DICCIONARIO/TP_DICCIONARIO.depend
+TP_DICCIONARIO/obj/Debug/ProcesadorTexto.o
+TP_DICCIONARIO/obj/Debug/main.o
+TP_DICCIONARIO/obj/Debug/Lista.o
+TP_DICCIONARIO/obj/Debug/FuncionesDiccionario.o
+TP_DICCIONARIO/bin/Debug/TP_DICCIONARIO.exe
