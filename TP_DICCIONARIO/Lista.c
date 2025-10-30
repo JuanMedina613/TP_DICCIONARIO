@@ -126,3 +126,21 @@ int listaSacarPorContenido(tLista *pLista, void *destino, size_t tamDestino, con
 
     return TODO_OK;
 }
+
+int listabuscarContenido(tLista *pLista, void *destino,size_t tam, const char *clave,int (*cmp)(const void *, const void *))
+{
+    tNodo *aux= *pLista;
+    tNodo *aux2 = NULL;
+
+        while(aux && (cmp(aux->info,clave) != 0)) // mientras aux siga existiendo y de diferente a la clave, que siga avanzando
+        {
+            aux2 = aux; // no pierdo la referencia
+            aux = aux->sig; // avanzo
+        }
+
+        if(!aux2)
+            return ERR; // el elemento no se encuentra
+
+        memcpy(destino,aux->info,MIN(tam, aux->tamInfo)); // si paso el if, quiere decir que encontro el nodo, por ende lo copia
+        return TODO_OK;
+}

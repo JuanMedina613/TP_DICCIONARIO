@@ -129,7 +129,7 @@ int sacar_dic(tDiccionario *pd, void *destino, size_t cant, const char *claveBus
     tLista *pLista;
     int resultado;
 
-    if(!pd || !pd->lista)
+    if(!pd || !pd->lista) // diccionario o lista vacia?
         return VACIO;
 
     // 1. Calcular la posición (hash)
@@ -174,3 +174,18 @@ int recorrer_dic(tDiccionario *pd, void (*accion)(void *))
     return TODO_OKEY;
 }
 ///===============================================================================//
+int obtener_dic(const tDiccionario *pd, void *destino, size_t cant, const char *claveaBuscar, int (*cmp)(const void *,const void *))
+{
+    size_t pos;
+    tLista *pLista;
+
+    if(!pd || !pd->lista)
+        return VACIO;
+    pos = (hashDiccionario(claveaBuscar) % pd->capacidad); // obtengo la pos del vector de lista de la clave a buscar
+    pLista = (pd->lista + pos); //Apunto a la lista en donde se encuentra la clave
+
+    if(!listabuscarContenido(pLista,destino,cant,claveaBuscar,cmp))
+        return ERROR1;
+
+    return TODO_OK;
+}

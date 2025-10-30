@@ -29,5 +29,6 @@ int listaRecorrer(tLista *pLista, void (*accion)(void *, void*), void *p);
 int listaBuscarPos(tLista *p, void* dato, int (*cmp)(const void *, const void*));
 int listaInsertarActDup(tLista *pLista, const void *dato, size_t tamDato, int (*cmp)(const void *, const void*), void (*accion)(void *, void*));
 int listaSacarPorContenido(tLista *pLista, void *destino, size_t tamDestino, const void *dato, int (*cmp)(const void *, const void *), void (*liberarInfo)(void *));
+int listabuscarContenido(tLista *pLista, void *destino,size_t tam, const char *clave,int (*cmp)(const void *, const void *));
 
 #endif // LISTA_H_INCLUDED
