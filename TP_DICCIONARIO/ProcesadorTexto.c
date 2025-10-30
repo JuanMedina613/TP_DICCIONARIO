@@ -138,7 +138,7 @@ int seleccionarArchivo(tDiccionario*pd)
 
     do
     {
-        printf("Seleccione numero de archivo(del 1 al 4):\n");
+        printf("Seleccione numero de archivo(del 1 al 4): ");
         scanf("%d",&nroarch);
         if(nroarch>4 || nroarch<1)
             printf("\nNumero de archivo invalido, ingrese un numero valido(del 1 al 4):\n");
@@ -185,7 +185,7 @@ int cargarArchivoEnDiccionario(tDiccionario* pd,FILE *pf)
     }
 
     *(size_t*)aux.valor = 1;
-
+    //printf("\n============-- TEXTO --============");
     while(linea != '\0' && fgets(linea,MAXLINE,pf))
     {
        if(!TrozaryGuardarArchivo(linea,&aux,pd))
@@ -204,7 +204,7 @@ int TrozaryGuardarArchivo(char *linea,sDato *dato,tDiccionario *pd)
 {
     char *dir = NULL;
 
-    printf("\n%s", linea);
+    //printf("\n%s", linea);
 
     dir = strchr(linea,'\n');
     if(!dir)
@@ -282,7 +282,7 @@ void menu(tDiccionario *pd)
         printf("2. Mostrar listado de apariciones por palabra (Recorrer Diccionario)\n");
         printf("3. Buscar apariciones de una palabra en particular\n");
         printf("0. Salir\n");
-        printf("Ingrese una opción: ");
+        printf("Ingrese una opcion: ");
 
         if(scanf("%d", &opcion) != 1)
         {
@@ -293,7 +293,7 @@ void menu(tDiccionario *pd)
         switch(opcion)
         {
             case 1:
-                printf("\n--- Estadísticas Generales ---\n");
+                printf("\n--- Estadisticas Generales ---\n");
                 total_espacios = contarEspacios(pd);
                 total_palabras = contarPalabras(pd);
                 total_signos = contarSignos(pd);
@@ -305,10 +305,11 @@ void menu(tDiccionario *pd)
 
             case 2:
                 printf("\n--- Listado de Apariciones (Recorrido del Diccionario) ---\n");
+                Listado_contarApariciones_de_Palabras(pd);
                 // Debes implementar una función de acción que imprima:
                 // void imprimirDato(void *DatoDiccionario, void *p_extra)
                 // y luego llamar: recorrer_dic(pd, imprimirDato);
-                printf("Funcion recorrer_dic y la accion de impresion pendientes de implementacion.\n");
+
                 break;
 
             case 3:
@@ -318,8 +319,10 @@ void menu(tDiccionario *pd)
                 // Aquí usarías obtener_dic para buscar la clave
                 // Necesitas una variable 'int apariciones_count = 0;'
                 //obtener_dic(pd, &apariciones_count, sizeof(int), palabra_busqueda, cmpClaveBusqueda);
-                aparicionesPalabra = contarApariciones_de_una_Palabra(pd,palabra_busqueda);
-                printf("La palabra \"%s\" aparece %d veces.\n", palabra_busqueda, aparicionesPalabra);
+                if((aparicionesPalabra = contarApariciones_de_una_Palabra(pd,palabra_busqueda)) != 0)
+                    printf("La palabra \"%s\" aparece %d veces.\n", palabra_busqueda, aparicionesPalabra);
+                else
+                    printf("La Palabra \"%s\" No Aparece en el Texto.\n",palabra_busqueda);
                 break;
 
             case 0:

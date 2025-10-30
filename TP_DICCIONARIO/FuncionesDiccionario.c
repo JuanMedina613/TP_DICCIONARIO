@@ -31,9 +31,7 @@ int destruir_dic(tDiccionario *pd)
             nodo = nodo->sig;
         }
         vaciarLista(aux);
-
         aux++;
-
     }
     free(pd->lista);
     pd->lista = NULL;

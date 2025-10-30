@@ -1,22 +1,24 @@
 # depslib dependency file v1.0
-1761703728 source:c:\users\administrator\documents\github\tp_diccionario\tp_diccionario\lista.c
+1761805274 source:c:\users\administrator\documents\github\tp_diccionario\tp_diccionario\lista.c
 	"lista.h"
+	"FuncionesDiccionario.h"
 
-1761703728 c:\users\administrator\documents\github\tp_diccionario\tp_diccionario\lista.h
+1761805274 c:\users\administrator\documents\github\tp_diccionario\tp_diccionario\lista.h
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 
-1761528188 source:c:\users\administrator\documents\github\tp_diccionario\tp_diccionario\main.c
-	"FuncionesDiccionario.h"
+1761805274 source:c:\users\administrator\documents\github\tp_diccionario\tp_diccionario\main.c
+	"ProcesadorTexto.h"
 
-1761703728 c:\users\administrator\documents\github\tp_diccionario\tp_diccionario\funcionesdiccionario.h
+1761789345 c:\users\administrator\documents\github\tp_diccionario\tp_diccionario\funcionesdiccionario.h
 	<stdio.h>
 	<stdlib.h>
 	"lista.h"
 
-1761704117 source:c:\users\administrator\documents\github\tp_diccionario\tp_diccionario\funcionesdiccionario.c
+1761805532 source:c:\users\administrator\documents\github\tp_diccionario\tp_diccionario\funcionesdiccionario.c
 	"FuncionesDiccionario.h"
+	"Lista.h"
 
 1761761641 source:c:\users\argentech.desktop-6m4kgn3.000\desktop\agustín\cursos programación\codeblock\programapractica\algoritmos\tp_diccionario-main\tp_diccionario\lista.c
 	"lista.h"
@@ -74,4 +76,12 @@
 	"FuncionesDiccionario.h"
 	<string.h>
 	<ctype.h>
+
+1761805274 c:\users\administrator\documents\github\tp_diccionario\tp_diccionario\procesadortexto.h
+	"FuncionesDiccionario.h"
+	<string.h>
+	<ctype.h>
+
+1761806302 source:c:\users\administrator\documents\github\tp_diccionario\tp_diccionario\procesadortexto.c
+	"ProcesadorTexto.h"
 
