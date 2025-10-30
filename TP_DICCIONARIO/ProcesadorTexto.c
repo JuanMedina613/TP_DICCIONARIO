@@ -288,9 +288,9 @@ void menu(tDiccionario *pd)
                 // Implementar función para contar espacios si se necesita, sino se puede omitir
                 total_palabras = contarPalabras(pd);
                 total_signos = contarSignos(pd);
-
                 printf("Cantidad total de palabras: %zu\n", total_palabras);
                 printf("Cantidad total de signos y caracteres especiales: %zu\n", total_signos);
+
                 break;
 
             case 2:

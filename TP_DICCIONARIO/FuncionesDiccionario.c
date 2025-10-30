@@ -153,8 +153,24 @@ int cmpClaveBusqueda(const void *v1, const void *v2)
     return strcmp(dato_nodo->clave, clave_busqueda);
 }
 ///===============================================================================//
-/*
-Poner en 0 la cant
-Llamar a crearLista
-Asignar capacidad
-*/
+int recorrer_dic(tDiccionario *pd, void (*accion)(void *))
+{
+    if (!pd || !pd->lista)
+        return VACIO;
+
+    tLista* ini = pd->lista;
+    tLista* fin = pd->lista + pd->capacidad;
+    while (ini < fin)
+    {
+
+        tNodo* nodo = *ini;
+        while (nodo != NULL)
+        {
+            accion(nodo->info);
+            nodo = nodo->sig;
+        }
+        ini++;
+    }
+    return TODO_OKEY;
+}
+///===============================================================================//
