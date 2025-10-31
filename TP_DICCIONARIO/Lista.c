@@ -20,7 +20,7 @@ int listaInsertarActDup(tLista *pLista, const void *dato, size_t tamDato, int (*
         return SIN_MEM;
     }
 
-    //printf("\nSe suma %s un total de %d\n", ((sDato *)(dato))->clave, *(int*)((sDato*)(dato))->valor);
+    //printf("\nSe suma %s un total de %d\n", ((sDato *)(dato))->clave, *(size_t*)((sDato*)(dato))->valor);
 
     memcpy(nDato, dato, tamDato);
 
@@ -102,7 +102,7 @@ int listaSacarPorContenido(tLista *pLista, void *destino, size_t tamDestino, con
     tNodo *act = *pLista;
     tNodo *ant = NULL;
 
-    while(act && cmp(dato, act->info) != 0)
+    while(act && cmp(act->info, dato) != 0)
     {
         ant = act;
         act = act->sig;
@@ -134,19 +134,17 @@ int listaSacarPorContenido(tLista *pLista, void *destino, size_t tamDestino, con
 int listabuscarContenido(tLista *pLista, void *destino,size_t tam, const char *clave,int (*cmp)(const void *, const void *))
 {
     tNodo *aux= *pLista;
-    tNodo *aux2 = NULL;
 
-        while(aux && (cmp(aux->info,clave) != 0)) // mientras aux siga existiendo y de diferente a la clave, que siga avanzando
-        {
-            aux2 = aux; // no pierdo la referencia
-            aux = aux->sig; // avanzo
-        }
+    while(aux && (cmp(aux->info,clave) != 0)) // mientras aux siga existiendo y de diferente a la clave, que siga avanzando
+    {
+        aux = aux->sig; // avanzo
+    }
 
-        if(!aux2)
-            return ERR; // el elemento no se encuentra
+    if(!aux)
+        return ERR; // el elemento no se encuentra
 
-        memcpy(destino,aux->info,MIN(tam, aux->tamInfo)); // si paso el if, quiere decir que encontro el nodo, por ende lo copia
-        return TODO_OK;
+    memcpy(destino,aux->info,MIN(tam, aux->tamInfo)); // si paso el if, quiere decir que encontro el nodo, por ende lo copia
+    return TODO_OK;
 }
 ///================================================================================================================================///
 int listaSacarPorPosicion(tLista *pLista, void *destino, size_t tam, unsigned pos)

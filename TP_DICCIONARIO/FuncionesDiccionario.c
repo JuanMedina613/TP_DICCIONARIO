@@ -76,19 +76,14 @@ void actValorReemplazo(void *actual, void *nuevo)
         return;
 
     memcpy(aux, nue->valor, nue->tam);
+
     free(act->valor);
     act->valor = aux;
 }
 ///================================================================================================================================///
-void actValorSumar(void *actual, void *nuevo)
-{
-    sDato *act = (sDato *)actual;
 
-    *(int *)act->valor += 1;
-
-}
 ///================================================================================================================================///
-int poner_dic(tDiccionario *pd, const void *valor, size_t tamDato, const char *clave, void (*accion)(void *, void *))
+int poner_dic(tDiccionario *pd, const void *valor, size_t tamDato, const char *clave)
 {
     sDato nuevo;
     size_t pos;
@@ -108,9 +103,10 @@ int poner_dic(tDiccionario *pd, const void *valor, size_t tamDato, const char *c
     memcpy(nuevo.valor, valor, tamDato);
 
     pos = hashDiccionario(clave) % pd->capacidad;
-    //printf("\nSe suma %s un total de %d\n", clave, *(int*)valor);
+    //printf("\nSe suma %s un total de %d\n", clave, *(size_t*)valor);
     //printf("\nPoniendo %s", clave);
-    if(!listaInsertarActDup((pd->lista + pos), &nuevo, sizeof(nuevo), cmpClave, accion))
+
+    if(!listaInsertarActDup((pd->lista + pos), &nuevo, sizeof(nuevo), cmpClave, actValorReemplazo))
     {
         free(nuevo.clave);
         free(nuevo.valor);
@@ -146,6 +142,7 @@ int sacar_dic(tDiccionario *pd, void *destino, size_t cant, const char *claveBus
     pLista = (pd->lista + pos); // Puntero a la lista en el bucket
 
     // 2. Buscar y sacar el nodo de la lista
+
     resultado = listaSacarPorContenido(pLista, destino, cant, (const void *)claveBusqueda, cmp, liberar_dato_dic);
 
     return (resultado == TODO_OK) ? TODO_OKEY : resultado;
@@ -193,7 +190,7 @@ int obtener_dic(const tDiccionario *pd, void *destino, size_t cant, const char *
     pos = (hashDiccionario(claveaBuscar) % pd->capacidad); // obtengo la pos del vector de lista de la clave a buscar
     pLista = (pd->lista + pos); //Apunto a la lista en donde se encuentra la clave
 
-    if(!listabuscarContenido(pLista,destino,cant,claveaBuscar,cmp))
+    if(listabuscarContenido(pLista,destino,cant,claveaBuscar,cmp) != TODO_OK)
         return ERROR1;
 
     return TODO_OK;

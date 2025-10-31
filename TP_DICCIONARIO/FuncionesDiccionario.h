@@ -8,6 +8,7 @@
 #define TODO_OKEY 1 // TODO_OKEY JAJA
 #define VACIO 1
 #define NO_ENCONTRADA 0
+#define CAPACIDAD_INICIAL 100
 typedef struct
 {
     tLista *lista;
@@ -28,7 +29,7 @@ Llamar a crearLista capacidad veces
 Asignar capacidad
 */
 
-int poner_dic(tDiccionario *pd, const void *valor, size_t tamDato, const char *clave, void (*accion)(void *, void *));
+int poner_dic(tDiccionario *pd, const void *valor, size_t tamDato, const char *clave);
 
 /*
 Mediante una funcion hash%capacidad, se transforma la clave en una posicion, que es la que define en cual de todas las listas vamos a insertar
@@ -52,7 +53,10 @@ Se reduce la capacidad en 1
 */
 
 void liberar_dato_dic(void *info);
-int cmpClaveBusqueda(const void *v1, const void *v2);
+
+int cmpClave(const void *v1, const void *v2); //Recibe 2 sDato
+
+int cmpClaveBusqueda(const void *v1, const void *v2); //Recibe un sDato y un string
 
 int recorrer_dic(tDiccionario *pd, void (*accion)(void *));
 

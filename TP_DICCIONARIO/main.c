@@ -4,7 +4,7 @@ int main()
 {
     //system("chcp 65001 >nul");
     tDiccionario dic;
-    crear_dic(&dic, 5);
+    crear_dic(&dic, CAPACIDAD_INICIAL);
 
     menu(&dic);
 

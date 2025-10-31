@@ -3,21 +3,21 @@
 void sumarValoresDic(void *DatoDiccionario, void *destino)
 {
     sDato *elemento = (sDato *)DatoDiccionario;
-    int * acum = (int *)destino;
+    size_t * acum = (size_t *)destino;
     char c = *elemento->clave;
     if (miEsAlpha((int)c))
     {
-        (*acum) += *(int *)(elemento->valor);
+        (*acum) += *(size_t *)(elemento->valor);
     }
 }
 ///================================================================================================================================///
 void sumarEspaciosDic(void *dato, void *destino)
 {
     sDato *elem = (sDato*)dato;
-    int * acum = (int*)destino;
+    size_t * acum = (size_t*)destino;
 
     if (elem->clave && strcmp(elem->clave, " ") == 0) // en la primer condicion verifico que exista la clave, luego comparo si es un espacio
-        (*acum) += *(int *)(elem->valor);
+        (*acum) += *(size_t *)(elem->valor);
 }
 
 ///================================================================================================================================///
@@ -70,7 +70,7 @@ void Listado_contarApariciones_de_Palabras(tDiccionario* pd)
         while(nodo != NULL)
         {
             dato=(sDato*)nodo->info;
-            printf("\n'%15s' Se Repite un Total de %3d veces", dato->clave, *(int*) dato->valor);
+            printf("\n'%15s' Se Repite un Total de %3zu veces", dato->clave, *(size_t*) dato->valor);
             nodo = nodo->sig;
         }
 
@@ -94,7 +94,7 @@ int contarApariciones_de_una_Palabra(tDiccionario* pd, const char* palabra)
         sDato* dato = (sDato*)nodo->info;
 
         if (strcmp(dato->clave, palabra) == 0)
-            return *(int*) dato->valor;   // encontré la palabra, devuelvo el valor
+            return *(size_t*) dato->valor;   // encontré la palabra, devuelvo el valor
         nodo = nodo->sig;  // sigo buscando
     }
     return NO_ENCONTRADA;  // no se encontró la palabra
@@ -132,9 +132,29 @@ void sumarSignosDic(void *DatoDiccionario, void *destino)
     if (!miEsAlpha(c) && c != ' ')
     {
         // Sumar el contador de apariciones de este signo
-        (*acum) += *(int *)(elemento->valor);
+        (*acum) += *(size_t *)(elemento->valor);
     }
-    //printf("\nPalabra %s valor %zu", elemento->clave, *(int *)elemento->valor);
+    //printf("\nPalabra %s valor %zu", elemento->clave, *(size_t *)elemento->valor);
+}
+///================================================================================================================================///
+int sumarPalabra(tDiccionario *pd, const char* clave)
+{
+    size_t contador = 1;
+    sDato aux;
+
+    if(!clave)
+        return ERROR1;
+
+    //printf("\nLa palabra es: %s", clave);
+    if(obtener_dic(pd,&aux,sizeof(sDato),clave,cmpClaveBusqueda) == TODO_OKEY)
+        contador = *(size_t *)aux.valor + 1;
+
+    if(poner_dic(pd,&contador,sizeof(size_t),clave) != TODO_OKEY)
+    {
+        return ERROR1;
+    }
+
+    return TODO_OKEY;
 }
 ///================================================================================================================================///
 int seleccionarArchivo(tDiccionario*pd)
@@ -188,12 +208,12 @@ int cargarArchivoEnDiccionario(tDiccionario* pd,FILE *pf)
     {
         free(aux.clave);
         free(aux.valor);
-        return ERROR1;
+        return SIN_MEM;
     }
 
     *(size_t*)aux.valor = 1;
     //printf("\n============-- TEXTO --============");
-    while(linea != '\0' && fgets(linea,MAXLINE,pf))
+    while(fgets(linea,MAXLINE,pf))
     {
        if(!TrozaryGuardarArchivo(linea,&aux,pd))
        {
@@ -227,9 +247,8 @@ int TrozaryGuardarArchivo(char *linea,sDato *dato,tDiccionario *pd)
                 dir = dir - 1;
                 *(dato->clave) = *dir;
                 *(dato->clave + 1) = '\0';
-                dato->tam = sizeof(size_t);
-                //printf("\nSe suma %s un total de %d\n", dato->clave, *(int*)dato->valor);
-                poner_dic(pd,dato->valor,dato->tam,dato->clave,actValorSumar); // guardamos el caracter para no perderlo
+                //printf("\nSe suma %s un total de %d\n", dato->clave, *(size_t*)dato->valor);
+                sumarPalabra(pd, dato->clave);
 
                 *dir = '\0'; // una vez guardado el caracter, \0 para seguir trozando
             }
@@ -241,17 +260,14 @@ int TrozaryGuardarArchivo(char *linea,sDato *dato,tDiccionario *pd)
         {
             *(dato->clave) = *dir;
             *(dato->clave + 1) = '\0';
-            dato->tam = sizeof(size_t);
-            //printf("\nSe suma %s un total de %d\n", dato->clave, *(int*)dato->valor);
-            poner_dic(pd,dato->valor,dato->tam,dato->clave,actValorSumar);
-
+            //printf("\nSe suma %s un total de %d\n", dato->clave, *(size_t*)dato->valor);
+            sumarPalabra(pd, dato->clave);
             strcpy(dato->clave,dir + 1); // copio la palabra
         }
 
 
-        dato->tam = sizeof(size_t);
-        //printf("\nSe suma %s un total de %d\n", dato->clave, *(int*)dato->valor);
-        poner_dic(pd,dato->valor,dato->tam,dato->clave,actValorSumar); // guardo en diccionario para no perder la palabra
+        //printf("\nSe suma %s un total de %d\n", dato->clave, *(size_t*)dato->valor);
+        sumarPalabra(pd, dato->clave);
 
         *dir = '\0'; // continuo poniendo \0
         // El if se hace ya que, si estamos parados al principio no se puede hacer dir + 1 ya que nos comeriamos una letra
@@ -266,7 +282,7 @@ void menu(tDiccionario *pd)
     size_t total_palabras;
     size_t total_signos;
     size_t total_espacios;
-    int aparicionesPalabra;
+    size_t aparicionesPalabra;
     char palabra_busqueda[MAXLINE];
 
     // Paso 1: Ingresar y cargar el archivo
@@ -328,7 +344,7 @@ void menu(tDiccionario *pd)
                 // Necesitas una variable 'int apariciones_count = 0;'
                 //obtener_dic(pd, &apariciones_count, sizeof(int), palabra_busqueda, cmpClaveBusqueda);
                 if((aparicionesPalabra = contarApariciones_de_una_Palabra(pd,palabra_busqueda)) != 0)
-                    printf("La palabra \"%s\" aparece %d veces.\n", palabra_busqueda, aparicionesPalabra);
+                    printf("La palabra \"%s\" aparece %zu veces.\n", palabra_busqueda, aparicionesPalabra);
                 else
                     printf("La Palabra \"%s\" No Aparece en el Texto.\n",palabra_busqueda);
                 break;
