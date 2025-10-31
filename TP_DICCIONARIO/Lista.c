@@ -1,11 +1,11 @@
 #include "lista.h"
 #include "FuncionesDiccionario.h"
-
+///================================================================================================================================///
 void crearLista(tLista *p)
 {
     *p = NULL;
 }
-
+///================================================================================================================================///
 int listaInsertarActDup(tLista *pLista, const void *dato, size_t tamDato, int (*cmp)(const void *, const void*), void (*accion)(void *, void*))
 {
     tNodo *insertar = (tNodo *)malloc(sizeof(tNodo) + tamDato);
@@ -49,7 +49,7 @@ int listaInsertarActDup(tLista *pLista, const void *dato, size_t tamDato, int (*
     free(nDato);
     return TODO_OK;
 }
-
+///================================================================================================================================///
 void vaciarLista(tLista *p)
 {
     tNodo *aux = NULL;
@@ -60,7 +60,7 @@ void vaciarLista(tLista *p)
         free(aux);
     }
 }
-
+///================================================================================================================================///
 int listaBuscarPos(tLista *p, void* dato, int (*cmp)(const void *, const void*))
 {
     int pos = 0;
@@ -73,7 +73,7 @@ int listaBuscarPos(tLista *p, void* dato, int (*cmp)(const void *, const void*))
     }
     return -1; // no lo encontro
 }
-
+///================================================================================================================================///
 int listaRecorrer(tLista *pLista, void (*accion)(void *, void*), void *p)
 {
     tNodo *actual = *pLista;
@@ -95,7 +95,7 @@ int cmp(const void *a , const void* b)
 {
     return (*(int*)a - *(int*)b); // si devuelve negativo, b es mas grande;si devuelve positivo a es mas grande
 }
-
+///================================================================================================================================///
 ///Busca el nodo por comparación, lo desengancha, copia su información a destino y llama a una función para liberar la info.
 int listaSacarPorContenido(tLista *pLista, void *destino, size_t tamDestino, const void *dato, int (*cmp)(const void *, const void *), void (*liberarInfo)(void *))
 {
@@ -130,7 +130,7 @@ int listaSacarPorContenido(tLista *pLista, void *destino, size_t tamDestino, con
 
     return TODO_OK;
 }
-
+///================================================================================================================================///
 int listabuscarContenido(tLista *pLista, void *destino,size_t tam, const char *clave,int (*cmp)(const void *, const void *))
 {
     tNodo *aux= *pLista;
@@ -147,4 +147,34 @@ int listabuscarContenido(tLista *pLista, void *destino,size_t tam, const char *c
 
         memcpy(destino,aux->info,MIN(tam, aux->tamInfo)); // si paso el if, quiere decir que encontro el nodo, por ende lo copia
         return TODO_OK;
+}
+///================================================================================================================================///
+int listaSacarPorPosicion(tLista *pLista, void *destino, size_t tam, unsigned pos)
+{
+    if( *pLista == NULL )
+        return VACIO;
+
+    tNodo *actual = *pLista;
+    tNodo *anterior = NULL;
+    unsigned i = 0;
+
+    while ( actual != NULL && i < pos)
+    {
+        anterior = actual;
+        actual = actual ->sig;
+        i++;
+    }
+    if(!actual)
+        return VACIO;
+    memcpy(destino, actual->info, MIN(actual->tamInfo, tam));
+
+    if(anterior)
+        anterior->sig = actual->sig;
+    else
+        *pLista = actual->sig;
+
+    free(actual->info);
+    free(actual);
+
+    return TODO_OKEY;
 }

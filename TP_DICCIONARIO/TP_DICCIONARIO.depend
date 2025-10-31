@@ -1,14 +1,14 @@
 # depslib dependency file v1.0
-1761805274 source:c:\users\administrator\documents\github\tp_diccionario\tp_diccionario\lista.c
+1761883549 source:c:\users\administrator\documents\github\tp_diccionario\tp_diccionario\lista.c
 	"lista.h"
 	"FuncionesDiccionario.h"
 
-1761805274 c:\users\administrator\documents\github\tp_diccionario\tp_diccionario\lista.h
+1761883549 c:\users\administrator\documents\github\tp_diccionario\tp_diccionario\lista.h
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 
-1761805274 source:c:\users\administrator\documents\github\tp_diccionario\tp_diccionario\main.c
+1761883549 source:c:\users\administrator\documents\github\tp_diccionario\tp_diccionario\main.c
 	"ProcesadorTexto.h"
 
 1761789345 c:\users\administrator\documents\github\tp_diccionario\tp_diccionario\funcionesdiccionario.h
@@ -16,7 +16,7 @@
 	<stdlib.h>
 	"lista.h"
 
-1761805532 source:c:\users\administrator\documents\github\tp_diccionario\tp_diccionario\funcionesdiccionario.c
+1761883549 source:c:\users\administrator\documents\github\tp_diccionario\tp_diccionario\funcionesdiccionario.c
 	"FuncionesDiccionario.h"
 	"Lista.h"
 
@@ -82,6 +82,6 @@
 	<string.h>
 	<ctype.h>
 
-1761806302 source:c:\users\administrator\documents\github\tp_diccionario\tp_diccionario\procesadortexto.c
+1761884264 source:c:\users\administrator\documents\github\tp_diccionario\tp_diccionario\procesadortexto.c
 	"ProcesadorTexto.h"
 

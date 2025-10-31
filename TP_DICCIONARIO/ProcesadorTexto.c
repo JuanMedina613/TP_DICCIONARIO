@@ -10,7 +10,7 @@ void sumarValoresDic(void *DatoDiccionario, void *destino)
         (*acum) += *(int *)(elemento->valor);
     }
 }
-///===============================================================================//
+///================================================================================================================================///
 void sumarEspaciosDic(void *dato, void *destino)
 {
     sDato *elem = (sDato*)dato;
@@ -20,7 +20,7 @@ void sumarEspaciosDic(void *dato, void *destino)
         (*acum) += *(int *)(elem->valor);
 }
 
-///===============================================================================//
+///================================================================================================================================///
 size_t contarPalabras(tDiccionario *pd)
 {
     size_t acum = 0;
@@ -37,7 +37,7 @@ size_t contarPalabras(tDiccionario *pd)
 
     return acum;
 }
-///===============================================================================//
+///================================================================================================================================///
 size_t contarEspacios(tDiccionario *pd)
 {
     size_t acum = 0;
@@ -53,24 +53,31 @@ size_t contarEspacios(tDiccionario *pd)
     return acum;
 
 }
-///===============================================================================//
+///================================================================================================================================///
 void Listado_contarApariciones_de_Palabras(tDiccionario* pd)
 {
-    tLista* fin = pd->lista + pd->capacidad;
-    tLista* ini = pd->lista;
-    while (ini < fin)
+    tLista *ini = NULL;
+    tLista *fin = NULL;
+    tNodo *nodo = NULL;
+    sDato *dato = NULL;
+
+    ini = pd->lista;
+    fin = pd->lista + pd->capacidad;
+
+    while(ini < fin)
     {
-        tNodo* nodo = *ini;              // <-- antes intentabas usar (*ini)->sig directamente
-        while (nodo != NULL)            // <-- reemplaza el while(!((*ini)->sig))
+        nodo=*ini;
+        while(nodo != NULL)
         {
-            sDato* dato = (sDato*)nodo->info;   // <-- antes usabas ((*ini)->sig->info)
-            printf("\n'%s' cantidad de veces que se repite '%d'",dato->clave,*(int*)dato->valor);
-            nodo = nodo->sig;            // <-- avanzar la lista, esto antes no estaba
+            dato=(sDato*)nodo->info;
+            printf("\n'%15s' Se Repite un Total de %3d veces", dato->clave, *(int*) dato->valor);
+            nodo = nodo->sig;
         }
-        ini++;  // siguiente
+
+        ini++;
     }
 }
-///===============================================================================//
+///================================================================================================================================///
 int contarApariciones_de_una_Palabra(tDiccionario* pd, const char* palabra)
 {
     size_t pos = hashDiccionario(palabra) % pd->capacidad;
@@ -92,7 +99,7 @@ int contarApariciones_de_una_Palabra(tDiccionario* pd, const char* palabra)
     }
     return NO_ENCONTRADA;  // no se encontró la palabra
 }
-///===============================================================================//
+///================================================================================================================================///
 size_t contarSignos(tDiccionario *pd)
 {
     size_t acum = 0;
@@ -112,7 +119,7 @@ size_t contarSignos(tDiccionario *pd)
 
     return acum;
 }
-///===============================================================================//
+///================================================================================================================================///
 void sumarSignosDic(void *DatoDiccionario, void *destino)
 {
     sDato *elemento = (sDato *)DatoDiccionario;
@@ -129,7 +136,7 @@ void sumarSignosDic(void *DatoDiccionario, void *destino)
     }
     //printf("\nPalabra %s valor %zu", elemento->clave, *(int *)elemento->valor);
 }
-///===============================================================================//
+///================================================================================================================================///
 int seleccionarArchivo(tDiccionario*pd)
 {
     FILE *pf;
@@ -170,7 +177,7 @@ int seleccionarArchivo(tDiccionario*pd)
     fclose(pf);
     return TODO_OK;
 }
-///===============================================================================//
+///================================================================================================================================///
 int cargarArchivoEnDiccionario(tDiccionario* pd,FILE *pf)
 {
     char linea[MAXLINE];
@@ -199,7 +206,7 @@ int cargarArchivoEnDiccionario(tDiccionario* pd,FILE *pf)
     free(aux.valor);
     return TODO_OK;
 }
-///===============================================================================//
+///================================================================================================================================///
 int TrozaryGuardarArchivo(char *linea,sDato *dato,tDiccionario *pd)
 {
     char *dir = NULL;
@@ -252,7 +259,7 @@ int TrozaryGuardarArchivo(char *linea,sDato *dato,tDiccionario *pd)
 
     return 1;
 }
-///===============================================================================//
+///================================================================================================================================///
 void menu(tDiccionario *pd)
 {
     int opcion = 0;
@@ -290,6 +297,7 @@ void menu(tDiccionario *pd)
             while(getchar() != '\n'); // Limpiar el buffer de entrada
         }
 
+        system("cls");
         switch(opcion)
         {
             case 1:
@@ -334,9 +342,12 @@ void menu(tDiccionario *pd)
                 printf("\nOpcion inválida. Intente de nuevo.\n");
                 break;
         }
+        printf("\n\n");
+        system("pause");
+        system("cls");
     }while(opcion != 0);
 }
-
+///================================================================================================================================///
 int miEsAlpha(int c)
 {
     // Letras normales A-Z / a-z

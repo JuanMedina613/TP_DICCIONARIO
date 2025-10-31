@@ -15,7 +15,7 @@ int crear_dic(tDiccionario *pd, size_t capacidad)
     }
     return TODO_OKEY;
 }
-///===============================================================================//
+///================================================================================================================================///
 int destruir_dic(tDiccionario *pd)
 {
     if(!pd || !pd->lista)
@@ -39,7 +39,7 @@ int destruir_dic(tDiccionario *pd)
 
     return TODO_OKEY;
 }
-///===============================================================================//
+///================================================================================================================================///
 size_t hashDiccionario(const char* str)
 {
     size_t hash = 1;
@@ -56,7 +56,7 @@ size_t hashDiccionario(const char* str)
 
 }
 
-///===============================================================================//
+///================================================================================================================================///
 int cmpClave(const void *v1, const void *v2)
 {
     sDato *d1 = (sDato *)v1;
@@ -65,7 +65,7 @@ int cmpClave(const void *v1, const void *v2)
     return strcmp(d1->clave, d2->clave);
 }
 
-///===============================================================================//
+///================================================================================================================================///
 void actValorReemplazo(void *actual, void *nuevo)
 {
     sDato *act = (sDato *)actual;
@@ -79,7 +79,7 @@ void actValorReemplazo(void *actual, void *nuevo)
     free(act->valor);
     act->valor = aux;
 }
-///===============================================================================//
+///================================================================================================================================///
 void actValorSumar(void *actual, void *nuevo)
 {
     sDato *act = (sDato *)actual;
@@ -87,7 +87,7 @@ void actValorSumar(void *actual, void *nuevo)
     *(int *)act->valor += 1;
 
 }
-///===============================================================================//
+///================================================================================================================================///
 int poner_dic(tDiccionario *pd, const void *valor, size_t tamDato, const char *clave, void (*accion)(void *, void *))
 {
     sDato nuevo;
@@ -119,7 +119,7 @@ int poner_dic(tDiccionario *pd, const void *valor, size_t tamDato, const char *c
 
     return TODO_OKEY;
 }
-///===============================================================================//
+///================================================================================================================================///
 
 ///Función auxiliar para liberar la memoria dinámica dentro de un sDato (la clave y el valor) antes de que el nodo de la lista sea liberado.
 void liberar_dato_dic(void *info)
@@ -131,7 +131,7 @@ void liberar_dato_dic(void *info)
     if(dato->valor)
         free(dato->valor);
 }
-///===============================================================================//
+///================================================================================================================================///
 int sacar_dic(tDiccionario *pd, void *destino, size_t cant, const char *claveBusqueda, int (*cmp)(const void *,const void *))
 {
     size_t pos;
@@ -150,7 +150,7 @@ int sacar_dic(tDiccionario *pd, void *destino, size_t cant, const char *claveBus
 
     return (resultado == TODO_OK) ? TODO_OKEY : resultado;
 }
-///===============================================================================//
+///================================================================================================================================///
 int cmpClaveBusqueda(const void *v1, const void *v2)
 {
     // v1 es el sDato* que está dentro del nodo de la lista
@@ -161,7 +161,7 @@ int cmpClaveBusqueda(const void *v1, const void *v2)
 
     return strcmp(dato_nodo->clave, clave_busqueda);
 }
-///===============================================================================//
+///================================================================================================================================///
 int recorrer_dic(tDiccionario *pd, void (*accion)(void *))
 {
     if (!pd || !pd->lista)
@@ -182,7 +182,7 @@ int recorrer_dic(tDiccionario *pd, void (*accion)(void *))
     }
     return TODO_OKEY;
 }
-///===============================================================================//
+///================================================================================================================================///
 int obtener_dic(const tDiccionario *pd, void *destino, size_t cant, const char *claveaBuscar, int (*cmp)(const void *,const void *))
 {
     size_t pos;

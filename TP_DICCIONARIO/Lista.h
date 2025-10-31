@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define MIN(X,Y) ((X)<=(Y)?(X):(Y))
+#define MIN( X , Y )(( X ) <= ( Y )?( X ):( Y ))
 
 #define SIN_MEM 0
 #define TODO_OK 1
@@ -30,5 +30,5 @@ int listaBuscarPos(tLista *p, void* dato, int (*cmp)(const void *, const void*))
 int listaInsertarActDup(tLista *pLista, const void *dato, size_t tamDato, int (*cmp)(const void *, const void*), void (*accion)(void *, void*));
 int listaSacarPorContenido(tLista *pLista, void *destino, size_t tamDestino, const void *dato, int (*cmp)(const void *, const void *), void (*liberarInfo)(void *));
 int listabuscarContenido(tLista *pLista, void *destino,size_t tam, const char *clave,int (*cmp)(const void *, const void *));
-//->juan tiene que hacerla int listaSacarPorPosicion();
+int listaSacarPorPosicion(tLista *pLista, void *destino, size_t tam, unsigned pos);
 #endif // LISTA_H_INCLUDED
