@@ -116,14 +116,13 @@ void sumarSignosDic(void *DatoDiccionario, void *destino)
 int sumarPalabra(tDiccionario *pd, const char* clave)
 {
     size_t contador = 1;
-    sDato aux;
 
     if(!clave)
         return ERROR1;
 
     //printf("\nLa palabra es: %s", clave);
-    if(obtener_dic(pd,&aux,sizeof(sDato),clave,cmpClaveBusqueda) == TODO_OKEY)
-        contador = *(size_t *)aux.valor + 1;
+    if(obtener_dic(pd,&contador,sizeof(size_t),clave,cmpClaveBusqueda) == TODO_OKEY)
+        contador += 1;
 
     if(poner_dic(pd,&contador,sizeof(size_t),clave) != TODO_OKEY)
     {
@@ -297,9 +296,9 @@ void menu(tDiccionario *pd)
                 total_espacios = contarEspacios(pd);
                 total_palabras = contarPalabras(pd);
                 total_signos = contarSignos(pd);
-                printf("Cantidad total de palabras: %zu\n", total_palabras);
-                printf("Cantidad total de espacios: %zu\n", total_espacios);
-                printf("Cantidad total de signos y caracteres especiales: %zu\n", total_signos);
+                printf("Cantidad total de palabras: %u\n", (unsigned int)total_palabras);
+                printf("Cantidad total de espacios: %u\n", (unsigned int)total_espacios);
+                printf("Cantidad total de signos y caracteres especiales: %u\n", (unsigned int)total_signos);
 
                 break;
 
@@ -321,7 +320,7 @@ void menu(tDiccionario *pd)
                 // Necesitas una variable 'int apariciones_count = 0;'
                 //obtener_dic(pd, &apariciones_count, sizeof(int), palabra_busqueda, cmpClaveBusqueda);
                 if((aparicionesPalabra = contarApariciones_de_una_Palabra(pd,palabra_busqueda)) != 0)
-                    printf("La palabra \"%s\" aparece %zu veces.\n", palabra_busqueda, aparicionesPalabra);
+                    printf("La palabra \"%s\" aparece %u veces.\n", palabra_busqueda, (unsigned int)aparicionesPalabra);
                 else
                     printf("La Palabra \"%s\" No Aparece en el Texto.\n",palabra_busqueda);
                 break;

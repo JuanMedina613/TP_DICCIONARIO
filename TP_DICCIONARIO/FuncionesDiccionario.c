@@ -20,8 +20,10 @@ int destruir_dic(tDiccionario *pd)
 {
     if(!pd || !pd->lista)
         return VACIO;
+
     tLista* aux = pd->lista;
     tNodo* nodo = NULL;
+
     while(aux < pd->lista + pd->capacidad)
     {
         nodo = *aux;
@@ -80,8 +82,6 @@ void actValorReemplazo(void *actual, void *nuevo)
     free(act->valor);
     act->valor = aux;
 }
-///================================================================================================================================///
-
 ///================================================================================================================================///
 int poner_dic(tDiccionario *pd, const void *valor, size_t tamDato, const char *clave)
 {
@@ -161,15 +161,18 @@ int cmpClaveBusqueda(const void *v1, const void *v2)
 ///================================================================================================================================///
 int recorrer_dic(tDiccionario *pd, void (*accion)(void *))
 {
+    tNodo* nodo;
+
     if (!pd || !pd->lista)
         return VACIO;
 
     tLista* ini = pd->lista;
     tLista* fin = pd->lista + pd->capacidad;
+
     while (ini < fin)
     {
 
-        tNodo* nodo = *ini;
+        nodo = *ini;
         while (nodo != NULL)
         {
             accion(nodo->info);
@@ -183,6 +186,7 @@ int recorrer_dic(tDiccionario *pd, void (*accion)(void *))
 int obtener_dic(const tDiccionario *pd, void *destino, size_t cant, const char *claveaBuscar, int (*cmp)(const void *,const void *))
 {
     size_t pos;
+    sDato aux;
     tLista *pLista;
 
     if(!pd || !pd->lista)
@@ -190,8 +194,10 @@ int obtener_dic(const tDiccionario *pd, void *destino, size_t cant, const char *
     pos = (hashDiccionario(claveaBuscar) % pd->capacidad); // obtengo la pos del vector de lista de la clave a buscar
     pLista = (pd->lista + pos); //Apunto a la lista en donde se encuentra la clave
 
-    if(listabuscarContenido(pLista,destino,cant,claveaBuscar,cmp) != TODO_OK)
+    if(listabuscarContenido(pLista,&aux,sizeof(sDato),claveaBuscar,cmp) != TODO_OK)
         return ERROR1;
+
+    memcpy(destino, aux.valor, MIN(cant, aux.tam));
 
     return TODO_OK;
 }

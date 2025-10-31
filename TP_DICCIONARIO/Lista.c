@@ -91,10 +91,6 @@ int listaRecorrer(tLista *pLista, void (*accion)(void *, void*), void *p)
     return TODO_OK;
 }
 
-int cmp(const void *a , const void* b)
-{
-    return (*(int*)a - *(int*)b); // si devuelve negativo, b es mas grande;si devuelve positivo a es mas grande
-}
 ///================================================================================================================================///
 ///Busca el nodo por comparación, lo desengancha, copia su información a destino y llama a una función para liberar la info.
 int listaSacarPorContenido(tLista *pLista, void *destino, size_t tamDestino, const void *dato, int (*cmp)(const void *, const void *), void (*liberarInfo)(void *))
