@@ -54,30 +54,6 @@ size_t contarEspacios(tDiccionario *pd)
 
 }
 ///================================================================================================================================///
-void Listado_contarApariciones_de_Palabras(tDiccionario* pd)
-{
-    tLista *ini = NULL;
-    tLista *fin = NULL;
-    tNodo *nodo = NULL;
-    sDato *dato = NULL;
-
-    ini = pd->lista;
-    fin = pd->lista + pd->capacidad;
-
-    while(ini < fin)
-    {
-        nodo=*ini;
-        while(nodo != NULL)
-        {
-            dato=(sDato*)nodo->info;
-            printf("\n'%15s' Se Repite un Total de %3zu veces", dato->clave, *(size_t*) dato->valor);
-            nodo = nodo->sig;
-        }
-
-        ini++;
-    }
-}
-///================================================================================================================================///
 int contarApariciones_de_una_Palabra(tDiccionario* pd, const char* palabra)
 {
     size_t pos = hashDiccionario(palabra) % pd->capacidad;
@@ -329,7 +305,8 @@ void menu(tDiccionario *pd)
 
             case 2:
                 printf("\n--- Listado de Apariciones (Recorrido del Diccionario) ---\n");
-                Listado_contarApariciones_de_Palabras(pd);
+                recorrer_dic(pd,imprimirDato);
+                //Listado_contarApariciones_de_Palabras(pd);
                 // Debes implementar una función de acción que imprima:
                 // void imprimirDato(void *DatoDiccionario, void *p_extra)
                 // y luego llamar: recorrer_dic(pd, imprimirDato);
@@ -362,6 +339,11 @@ void menu(tDiccionario *pd)
         system("pause");
         system("cls");
     }while(opcion != 0);
+}
+void imprimirDato(void *DatoDiccionario)
+{
+    sDato* aux = (sDato*)DatoDiccionario;
+    printf("\n'%15s' esta Palabra se repitio %4d",aux->clave,*(int*)aux->valor);
 }
 ///================================================================================================================================///
 int miEsAlpha(int c)

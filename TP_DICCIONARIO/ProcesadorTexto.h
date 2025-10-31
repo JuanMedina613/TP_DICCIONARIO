@@ -8,7 +8,6 @@
 size_t contarPalabras(tDiccionario *pd);
 size_t contarEspacios(tDiccionario *pd);
 int miEsAlpha(int c);
-void Listado_contarApariciones_de_Palabras(tDiccionario* pd);
 int contarApariciones_de_una_Palabra(tDiccionario* pd, const char* palabra);
 size_t contarSignos(tDiccionario *pd);
 void sumarSignosDic(void *DatoDiccionario, void *destino);
@@ -17,5 +16,5 @@ int cargarArchivoEnDiccionario(tDiccionario* pd,FILE *pf);
 int TrozaryGuardarArchivo(char *linea,sDato *dato,tDiccionario *pd);
 void actValorSumar(void *actual, void *nuevo);
 void menu(tDiccionario *pd);
-
+void imprimirDato(void *DatoDiccionario);
 #endif // PROCESADORTEXTO_H_INCLUDED

@@ -147,4 +147,32 @@ int listabuscarContenido(tLista *pLista, void *destino,size_t tam, const char *c
     return TODO_OK;
 }
 ///================================================================================================================================///
+int listaSacarPorPosicion(tLista *pLista, void *destino, size_t tam, unsigned pos)
+{
+    if( *pLista == NULL )
+        return VACIO;
 
+    tNodo *actual = *pLista;
+    tNodo *anterior = NULL;
+    unsigned i = 0;
+
+    while ( actual != NULL && i < pos)
+    {
+        anterior = actual;
+        actual = actual ->sig;
+        i++;
+    }
+    if(!actual)
+        return VACIO;
+    memcpy(destino, actual->info, MIN(actual->tamInfo, tam));
+
+    if(anterior)
+        anterior->sig = actual->sig;
+    else
+        *pLista = actual->sig;
+
+    free(actual->info);
+    free(actual);
+
+    return TODO_OKEY;
+}

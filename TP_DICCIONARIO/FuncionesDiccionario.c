@@ -4,20 +4,15 @@
 int crear_dic(tDiccionario *pd, size_t capacidad)
 {
     pd->lista = malloc(capacidad * sizeof(tLista));
-
     if(!(pd->lista))
             return ERROR1;
-
     pd->capacidad = capacidad;
-
     tLista *aux = pd->lista;
-
     while(aux < pd->lista + capacidad)
     {
         crearLista(aux);
         aux++;
     }
-
     return TODO_OKEY;
 }
 ///================================================================================================================================///
@@ -58,7 +53,9 @@ size_t hashDiccionario(const char* str)
     }
 
     return hash;
+
 }
+
 ///================================================================================================================================///
 int cmpClave(const void *v1, const void *v2)
 {
@@ -67,6 +64,7 @@ int cmpClave(const void *v1, const void *v2)
 
     return strcmp(d1->clave, d2->clave);
 }
+
 ///================================================================================================================================///
 void actValorReemplazo(void *actual, void *nuevo)
 {
@@ -82,6 +80,8 @@ void actValorReemplazo(void *actual, void *nuevo)
     free(act->valor);
     act->valor = aux;
 }
+///================================================================================================================================///
+
 ///================================================================================================================================///
 int poner_dic(tDiccionario *pd, const void *valor, size_t tamDato, const char *clave)
 {
