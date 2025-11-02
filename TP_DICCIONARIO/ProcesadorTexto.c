@@ -54,7 +54,7 @@ size_t contarEspacios(tDiccionario *pd)
 
 }
 ///================================================================================================================================///
-int contarApariciones_de_una_Palabra(tDiccionario* pd, const char* palabra)
+size_t contarApariciones_de_una_Palabra(tDiccionario* pd, const char* palabra)
 {
     size_t pos = hashDiccionario(palabra) % pd->capacidad;
     tLista* lista = pd->lista + pos;
@@ -70,10 +70,10 @@ int contarApariciones_de_una_Palabra(tDiccionario* pd, const char* palabra)
         sDato* dato = (sDato*)nodo->info;
 
         if (strcmp(dato->clave, palabra) == 0)
-            return *(size_t*) dato->valor;   // encontr� la palabra, devuelvo el valor
+            return *(size_t*) dato->valor;   // encontré la palabra, devuelvo el valor
         nodo = nodo->sig;  // sigo buscando
     }
-    return NO_ENCONTRADA;  // no se encontr� la palabra
+    return NO_ENCONTRADA;  // no se encontró la palabra
 }
 ///================================================================================================================================///
 size_t contarSignos(tDiccionario *pd)
@@ -83,13 +83,13 @@ size_t contarSignos(tDiccionario *pd)
 
     if(!pd || !pd->lista)
     {
-        return 0; // Se retorna 0 si est� vac�o
+        return 0; // Se retorna 0 si está vacío
     }
 
     // Recorrer el vector principal
     for(aux = 0; aux < pd->capacidad; aux++)
     {
-        // Llamar a listaRecorrer con la acci�n que suma solo los signos
+        // Llamar a listaRecorrer con la acción que suma solo los signos
         listaRecorrer(pd->lista + aux, sumarSignosDic, &acum);
     }
 
@@ -113,18 +113,17 @@ void sumarSignosDic(void *DatoDiccionario, void *destino)
     //printf("\nPalabra %s valor %zu", elemento->clave, *(size_t *)elemento->valor);
 }
 ///================================================================================================================================///
-int sumarPalabra(tDiccionario *pd, const char* clave)
+int sumarPalabra(tDiccionario *pd, char* clave)
 {
     size_t contador = 1;
 
     if(!clave)
         return ERROR1;
 
-    //printf("\nLa palabra es: %s", clave);
-    if(obtener_dic(pd,&contador,sizeof(size_t),clave,cmpClaveBusqueda) == TODO_OKEY)
+    if(obtener_dic(pd,&contador,sizeof(size_t),quitarEspeciales(clave),cmpClaveBusqueda) == TODO_OKEY)
         contador += 1;
 
-    if(poner_dic(pd,&contador,sizeof(size_t),clave) != TODO_OKEY)
+    if(poner_dic(pd,&contador,sizeof(size_t), quitarEspeciales(clave)) != TODO_OKEY)
     {
         return ERROR1;
     }
@@ -207,7 +206,7 @@ int TrozaryGuardarArchivo(char *linea,sDato *dato,tDiccionario *pd)
     char *dir = NULL;
 
     //printf("\n%s", linea);
-
+    quitarEspeciales(linea);
     dir = strchr(linea,'\n');
     if(!dir)
         return ERROR1;
@@ -227,10 +226,27 @@ int TrozaryGuardarArchivo(char *linea,sDato *dato,tDiccionario *pd)
 
                 *dir = '\0'; // una vez guardado el caracter, \0 para seguir trozando
             }
-        if(!(dir = strrchr(linea,' ')))
+        // busca desde el final el primer carácter no alfabético
+        dir = linea + strlen(linea) - 1;
+        while (dir >= linea && miEsAlpha(*dir))
+            dir--;
+        if (dir < linea)
+            dir = NULL;
+
+        if(!(dir))
         {
             dir = linea; // En caso de que retorne NULL porque no hay espacios, significa que llegamos a fin de cadena, por ende igualamos
-            strcpy(dato->clave,dir); // copio la palabra
+            while(*dir && *dir != '\n' && !miEsAlpha(*dir))// si dir-1 no esta fuera de la linea(existe) y dir-1 no es un caracter y no es espacio vacio insertamos el caracter
+            {
+                *(dato->clave) = *dir;
+                *(dato->clave + 1) = '\0';
+                //printf("\nSe suma %s un total de %d\n", dato->clave, *(size_t*)dato->valor);
+                sumarPalabra(pd, dato->clave);
+                dir++;
+            }
+            strcpy(dato->clave,dir);
+            linea = dir;
+
         }else
         {
             *(dato->clave) = *dir;
@@ -239,7 +255,6 @@ int TrozaryGuardarArchivo(char *linea,sDato *dato,tDiccionario *pd)
             sumarPalabra(pd, dato->clave);
             strcpy(dato->clave,dir + 1); // copio la palabra
         }
-
 
         //printf("\nSe suma %s un total de %d\n", dato->clave, *(size_t*)dato->valor);
         sumarPalabra(pd, dato->clave);
@@ -250,6 +265,7 @@ int TrozaryGuardarArchivo(char *linea,sDato *dato,tDiccionario *pd)
 
     return 1;
 }
+
 ///================================================================================================================================///
 void menu(tDiccionario *pd)
 {
@@ -270,7 +286,7 @@ void menu(tDiccionario *pd)
 
     printf("\nArchivo cargado y diccionario poblado con exito.\n");
 
-    // Bucle del men�
+    // Bucle del menú
     do
     {
         printf("\n============================================\n");
@@ -284,7 +300,7 @@ void menu(tDiccionario *pd)
 
         if(scanf("%d", &opcion) != 1)
         {
-            opcion = -1; // Forzar un valor inv�lido si la entrada no es un n�mero
+            opcion = -1; // Forzar un valor inválido si la entrada no es un número
             while(getchar() != '\n'); // Limpiar el buffer de entrada
         }
 
@@ -306,7 +322,7 @@ void menu(tDiccionario *pd)
                 printf("\n--- Listado de Apariciones (Recorrido del Diccionario) ---\n");
                 recorrer_dic(pd,imprimirDato);
                 //Listado_contarApariciones_de_Palabras(pd);
-                // Debes implementar una funci�n de acci�n que imprima:
+                // Debes implementar una función de acción que imprima:
                 // void imprimirDato(void *DatoDiccionario, void *p_extra)
                 // y luego llamar: recorrer_dic(pd, imprimirDato);
 
@@ -316,10 +332,8 @@ void menu(tDiccionario *pd)
                 printf("\n--- Busqueda de Palabra Especifica ---\n");
                 printf("Ingrese la palabra a buscar: ");
                 scanf("%s", palabra_busqueda);
-                // Aqu� usar�as obtener_dic para buscar la clave
-                // Necesitas una variable 'int apariciones_count = 0;'
-                //obtener_dic(pd, &apariciones_count, sizeof(int), palabra_busqueda, cmpClaveBusqueda);
-                if((aparicionesPalabra = contarApariciones_de_una_Palabra(pd,palabra_busqueda)) != 0)
+
+                if((aparicionesPalabra = contarApariciones_de_una_Palabra(pd,quitarEspeciales(palabra_busqueda))) != 0)
                     printf("La palabra \"%s\" aparece %u veces.\n", palabra_busqueda, (unsigned int)aparicionesPalabra);
                 else
                     printf("La Palabra \"%s\" No Aparece en el Texto.\n",palabra_busqueda);
@@ -331,7 +345,7 @@ void menu(tDiccionario *pd)
                 break;
 
             default:
-                printf("\nOpcion inv�lida. Intente de nuevo.\n");
+                printf("\nOpcion inválida. Intente de nuevo.\n");
                 break;
         }
         printf("\n\n");
@@ -345,21 +359,105 @@ void imprimirDato(void *DatoDiccionario)
     printf("\n'%15s' esta Palabra se repitio %4d",aux->clave,*(int*)aux->valor);
 }
 ///================================================================================================================================///
+
+char *quitarEspeciales(char *palabra)
+{
+    if (!palabra) return NULL;
+
+    unsigned char *src = (unsigned char *)palabra;
+    char *dst = palabra;
+    size_t len = strlen(palabra);
+
+    /* Quitar BOM si existe */
+    if (len >= 3 && src[0] == 0xEF && src[1] == 0xBB && src[2] == 0xBF) {
+        memmove(palabra, palabra + 3, len - 2); /* incluye '\0' */
+        src = (unsigned char *)palabra;
+        len -= 3;
+    }
+
+    size_t i = 0;
+    while (i < len)
+    {
+        unsigned char c = src[i];
+
+        /* UTF-8 de 2 bytes */
+        if ((c == 0xC2 || c == 0xC3) && (i + 1 < len))
+        {
+            unsigned char n = src[i + 1];
+
+            if (c == 0xC2 && n == 0xBF) { *dst++ = '?'; }      /* ¿ */
+            else if (c == 0xC2 && n == 0xA1) { *dst++ = (char)0xA1; } /* ¡ */
+            else if (c == 0xC3 && n == 0xA1) { *dst++ = 'a'; } /* á */
+            else if (c == 0xC3 && n == 0x81) { *dst++ = 'A'; } /* Á */
+            else if (c == 0xC3 && n == 0xA9) { *dst++ = 'e'; } /* é */
+            else if (c == 0xC3 && n == 0x89) { *dst++ = 'E'; } /* É */
+            else if (c == 0xC3 && n == 0xAD) { *dst++ = 'i'; } /* í */
+            else if (c == 0xC3 && n == 0x8D) { *dst++ = 'I'; } /* Í */
+            else if (c == 0xC3 && n == 0xB3) { *dst++ = 'o'; } /* ó */
+            else if (c == 0xC3 && n == 0x93) { *dst++ = 'O'; } /* Ó */
+            else if (c == 0xC3 && n == 0xBA) { *dst++ = 'u'; } /* ú */
+            else if (c == 0xC3 && n == 0x9A) { *dst++ = 'U'; } /* Ú */
+            else if (c == 0xC3 && n == 0xBC) { *dst++ = 'u'; } /* ü */
+            else if (c == 0xC3 && n == 0x9C) { *dst++ = 'U'; } /* Ü */
+            else if (c == 0xC3 && n == 0xB1) { *dst++ = 'n'; } /* ñ */
+            else if (c == 0xC3 && n == 0x91) { *dst++ = 'N'; } /* Ñ */
+            else if (n >= 0x20 && n <= 0x7E) { *dst++ = (char)n; } /* ASCII secundario */
+            else { *dst++ = '?'; }
+
+            i += 2; /* avanzamos dos bytes */
+        }
+        /* Latin-1 single byte */
+        else if (c >= 0xC0)
+        {
+            if (c == 0xE1) *dst++ = 'a'; /* á */
+            else if (c == 0xC1) *dst++ = 'A'; /* Á */
+            else if (c == 0xE9) *dst++ = 'e'; /* é */
+            else if (c == 0xC9) *dst++ = 'E'; /* É */
+            else if (c == 0xED) *dst++ = 'i'; /* í */
+            else if (c == 0xCD) *dst++ = 'I'; /* Í */
+            else if (c == 0xF3) *dst++ = 'o'; /* ó */
+            else if (c == 0xD3) *dst++ = 'O'; /* Ó */
+            else if (c == 0xFA) *dst++ = 'u'; /* ú */
+            else if (c == 0xDA) *dst++ = 'U'; /* Ú */
+            else if (c == 0xFC) *dst++ = 'u'; /* ü */
+            else if (c == 0xDC) *dst++ = 'U'; /* Ü */
+            else if (c == 0xF1) *dst++ = 'n'; /* ñ */
+            else if (c == 0xD1) *dst++ = 'N'; /* Ñ */
+            else if (c == 0xBF) *dst++ = '?'; /* ¿ */
+            else *dst++ = (char)c;
+
+            i += 1;
+        }
+        /* ASCII normal */
+        else
+        {
+            *dst++ = (char)c;
+            i += 1;
+        }
+    }
+
+    *dst = '\0';
+    return palabra;
+}
+
 int miEsAlpha(int c)
 {
     // Letras normales A-Z / a-z
     if (isalpha(c))
         return 1;
 
-    // Vocales acentuadas b�sicas (�, �, �, �, � y sus may�sculas)
+    // Vocales acentuadas básicas (á, é, í, ó, ú y sus mayúsculas)
     switch (c)
     {
-        case 0xE1: case 0xC1: // � �
-        case 0xE9: case 0xC9: // � �
-        case 0xED: case 0xCD: // � �
-        case 0xF3: case 0xD3: // � �
-        case 0xFA: case 0xDA: // � �
-        case 0xF1: case 0xD1:
+        case 0xE1: case 0xC1: // á Á
+        case 0xE9: case 0xC9: // é É
+        case 0xED: case 0xCD: // í Í
+        case 0xF3: case 0xD3: // ó Ó
+        case 0xFA: case 0xDA: // ú Ú
+        case 0xF1: case 0xD1: // ñ Ñ
+        case 0xFC: case 0xDC: // ü Ü
+        case 0xBF:
+
             return 1;
         default:
             return 0;
