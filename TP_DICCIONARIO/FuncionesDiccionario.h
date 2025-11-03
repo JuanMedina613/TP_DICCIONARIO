@@ -4,11 +4,11 @@
 #include <stdlib.h>
 #include "lista.h"
 
-#define ERROR1 0 //Problema relacionado a la Memoria
-#define TODO_OKEY 1 // TODO_OKEY JAJA
-#define VACIO 1
+#define ERROR1 0 //Problema de Memoria
+#define TODO_OKEY 1
+#define VACIO 0
 #define NO_ENCONTRADA 0
-#define CAPACIDAD_INICIAL 100
+#define CAPACIDAD_INICIAL 100 //"A mayor capacidad, mayor velocidad."
 typedef struct
 {
     tLista *lista;
@@ -22,7 +22,6 @@ typedef struct{
 }sDato;
 
 int crear_dic(tDiccionario *pd, size_t capacidad);
-
 /*
 Poner en 0 la cant
 Llamar a crearLista capacidad veces
@@ -30,22 +29,18 @@ Asignar capacidad
 */
 
 int poner_dic(tDiccionario *pd, const void *valor, size_t tamDato, const char *clave);
-
 /*
 Mediante una funcion hash%capacidad, se transforma la clave en una posicion, que es la que define en cual de todas las listas vamos a insertar
 Utilizamos la funcion accion para definir si reemplazamos el valor por el nuevo, o para sumar al contador de apariciones.
-
 */
 
 int obtener_dic(const tDiccionario *pd, void *destino, size_t cant, const char *claveBusqueda, int (*cmp)(const void *,const void *));
-
 /*
 Nos paramos en la lista que cumpla hash%capacidad y usamos buscarLista para encontrar un nodo que en su info tenga una clave igual al hash
 Lo que devuelve buscarLista (La posición del nodo que tiene esa clave) se envía como posición en verListaPos
 */
 
 int sacar_dic(tDiccionario *pd, void *destino, size_t cant, const char *claveBusqueda, int (*cmp)(const void *,const void *));
-
 /*
 Nos paramos en la lista que cumpla hash%capacidad y usamos buscarLista para encontrar un nodo que en su info tenga una clave igual al hash
 Lo que devuelve buscarLista (La posición del nodo que tiene esa clave) se envía como posición en sacarListaPos
@@ -57,6 +52,8 @@ void liberar_dato_dic(void *info);
 int cmpClave(const void *v1, const void *v2); //Recibe 2 sDato
 
 int cmpClaveBusqueda(const void *v1, const void *v2); //Recibe un sDato y un string
+
+void actValorReemplazo(void *actual, void *nuevo);
 
 int recorrer_dic(tDiccionario *pd, void (*accion)(void *));
 

@@ -7,7 +7,9 @@ int main()
     tDiccionario dic;
     crear_dic(&dic, CAPACIDAD_INICIAL);
 
-    menu(&dic); //Destruimos el diccionario en la funcion menu
+    menu(&dic);
+
+    destruir_dic(&dic);
 
     return 0;
 }
