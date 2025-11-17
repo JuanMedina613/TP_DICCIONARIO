@@ -29,7 +29,11 @@ int poner_dic(tDiccionario *pd, const void *valor, size_t tamDato, const char *c
     nuevo.valor = malloc(tamDato);
 
     if(!nuevo.clave || !nuevo.valor)
+    {
+        free(nuevo.clave);
+        free(nuevo.valor);
         return SIN_MEM;
+    }
 
     strcpy(nuevo.clave, clave);
     memcpy(nuevo.valor, valor, tamDato);
@@ -42,7 +46,6 @@ int poner_dic(tDiccionario *pd, const void *valor, size_t tamDato, const char *c
         free(nuevo.valor);
         return ERROR1;
     }
-
     return TODO_OKEY;
 }
 ///================================================================================================================================///
@@ -83,7 +86,6 @@ int sacar_dic(tDiccionario *pd, void *destino, size_t cant, const char *claveBus
     return (resultado == TODO_OK) ? TODO_OKEY : resultado; //Si resultado es TODO_OK devuelve TODO_OKEY, si no, devuelve el valor de resultado
 }
 ///================================================================================================================================///
-//Función auxiliar para liberar la memoria dinámica dentro de un sDato (la clave y el valor) antes de que el nodo de la lista sea liberado.
 void liberar_dato_dic(void *info)
 {
     sDato *dato = (sDato *)info;
@@ -150,7 +152,7 @@ int recorrer_dic(tDiccionario *pd, void (*accion)(void *))
     return TODO_OKEY;
 }
 ///================================================================================================================================///
-int destruir_dic(tDiccionario *pd)
+int destruir_dic(tDiccionario *pd,void (*liberar)(void *))
 {
     if(!pd || !pd->lista)
         return VACIO;
@@ -163,7 +165,7 @@ int destruir_dic(tDiccionario *pd)
         nodo = *aux;
         while(nodo)
         {
-            liberar_dato_dic(nodo->info);
+            liberar(nodo->info);
             nodo = nodo->sig;
         }
         vaciarLista(aux);

@@ -9,7 +9,7 @@ int main()
 
     menu(&dic);
 
-    destruir_dic(&dic);
+    destruir_dic(&dic,liberar_dato_dic);
 
     return 0;
 }

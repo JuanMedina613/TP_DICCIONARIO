@@ -8,15 +8,15 @@
 	<stdlib.h>
 	<string.h>
 
-1762151915 source:c:\users\administrator\documents\github\tp_diccionario\tp_diccionario\main.c
+1763340243 source:c:\users\administrator\documents\github\tp_diccionario\tp_diccionario\main.c
 	"ProcesadorTexto.h"
 
-1762180349 c:\users\administrator\documents\github\tp_diccionario\tp_diccionario\funcionesdiccionario.h
+1763340243 c:\users\administrator\documents\github\tp_diccionario\tp_diccionario\funcionesdiccionario.h
 	<stdio.h>
 	<stdlib.h>
 	"lista.h"
 
-1762154454 source:c:\users\administrator\documents\github\tp_diccionario\tp_diccionario\funcionesdiccionario.c
+1763340674 source:c:\users\administrator\documents\github\tp_diccionario\tp_diccionario\funcionesdiccionario.c
 	"FuncionesDiccionario.h"
 	"Lista.h"
 
@@ -82,6 +82,6 @@
 	<string.h>
 	<ctype.h>
 
-1762155301 source:c:\users\administrator\documents\github\tp_diccionario\tp_diccionario\procesadortexto.c
+1763340243 source:c:\users\administrator\documents\github\tp_diccionario\tp_diccionario\procesadortexto.c
 	"ProcesadorTexto.h"
 

@@ -20,8 +20,6 @@ int listaInsertarActDup(tLista *pLista, const void *dato, size_t tamDato, int (*
         return SIN_MEM;
     }
 
-    //printf("\nSe suma %s un total de %d\n", ((sDato *)(dato))->clave, *(size_t*)((sDato*)(dato))->valor);
-
     memcpy(nDato, dato, tamDato);
 
     while(act && cmp(nDato, act->info) > 0)
@@ -105,23 +103,18 @@ int listaSacarPorContenido(tLista *pLista, void *destino, size_t tamDestino, con
     }
 
     if(!act)
-        return ERR; // No se encontró el elemento
-
-    // 1. Copiar la información al destino (si se necesita)
+        return ERR;
     if(destino)
         memcpy(destino, act->info, MIN(tamDestino, act->tamInfo));
 
-    // 2. Desenganchar el nodo
     if(ant)
         ant->sig = act->sig;
     else
-        *pLista = act->sig; // El nodo a sacar es la cabecera
+        *pLista = act->sig;
 
-    // 3. Liberar la memoria interna (clave y valor del sDato)
     if(liberarInfo)
         liberarInfo(act->info);
 
-    // 4. Liberar el nodo
     free(act);
 
     return TODO_OK;
@@ -131,14 +124,14 @@ int listabuscarContenido(tLista *pLista, void *destino,size_t tam, const char *c
 {
     tNodo *aux= *pLista;
 
-    while(aux && (cmp(aux->info,clave) != 0)) // mientras aux siga existiendo y de diferente a la clave, que siga avanzando
+    while(aux && (cmp(aux->info,clave) != 0))
     {
         aux = aux->sig; // avanzo
     }
 
     if(!aux)
-        return ERR; // el elemento no se encuentra
+        return ERR;
 
-    memcpy(destino,aux->info,MIN(tam, aux->tamInfo)); // si paso el if, quiere decir que encontro el nodo, por ende lo copia
+    memcpy(destino,aux->info,MIN(tam, aux->tamInfo));
     return TODO_OK;
 }

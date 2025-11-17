@@ -63,7 +63,7 @@ for desde 0 hasta capacidad
 recorrerLista(tLista *pd, acccion)
 */
 
-int destruir_dic(tDiccionario *pd);
+int destruir_dic(tDiccionario *pd,void (*liberar)(void *));
 /*
 Recorre todas las listas haciendo free
 Capacidad y cant pasan a ser 0

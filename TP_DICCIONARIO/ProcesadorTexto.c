@@ -43,8 +43,8 @@ size_t contarEspacios(tDiccionario *pd)
     size_t acum = 0;
     tLista *ini = pd->lista;
 
-    if(!pd || !pd->lista) // verifico que la lista no este vacia
-        return VACIO;     // si no hay nada, retorno error
+    if(!pd || !pd->lista) // verifico
+        return VACIO;
 
     for(; ini < pd->lista + pd->capacidad; ini++)
     {
@@ -335,7 +335,7 @@ void menu(tDiccionario *pd)
 
         case 0:
             printf("\nSaliendo del procesador de texto. Destruyendo diccionario...\n");
-            destruir_dic(pd);
+            destruir_dic(pd,liberar_dato_dic);
             break;
 
         default:
