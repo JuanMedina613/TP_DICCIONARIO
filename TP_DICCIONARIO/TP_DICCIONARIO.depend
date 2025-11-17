@@ -48,11 +48,11 @@
 	"FuncionesDiccionario.h"
 	"Lista.h"
 
-1761951539 source:t:\documentos\github\tp_diccionario\tp_diccionario\funcionesdiccionario.c
+1763397178 source:t:\documentos\github\tp_diccionario\tp_diccionario\funcionesdiccionario.c
 	"FuncionesDiccionario.h"
 	"Lista.h"
 
-1761950645 t:\documentos\github\tp_diccionario\tp_diccionario\funcionesdiccionario.h
+1763398060 t:\documentos\github\tp_diccionario\tp_diccionario\funcionesdiccionario.h
 	<stdio.h>
 	<stdlib.h>
 	"lista.h"
@@ -62,14 +62,14 @@
 	<stdlib.h>
 	<string.h>
 
-1761951756 source:t:\documentos\github\tp_diccionario\tp_diccionario\lista.c
+1763397178 source:t:\documentos\github\tp_diccionario\tp_diccionario\lista.c
 	"lista.h"
 	"FuncionesDiccionario.h"
 
-1762117645 source:t:\documentos\github\tp_diccionario\tp_diccionario\main.c
+1763397178 source:t:\documentos\github\tp_diccionario\tp_diccionario\main.c
 	"ProcesadorTexto.h"
 
-1762117928 source:t:\documentos\github\tp_diccionario\tp_diccionario\procesadortexto.c
+1763397564 source:t:\documentos\github\tp_diccionario\tp_diccionario\procesadortexto.c
 	"ProcesadorTexto.h"
 
 1762113284 t:\documentos\github\tp_diccionario\tp_diccionario\procesadortexto.h

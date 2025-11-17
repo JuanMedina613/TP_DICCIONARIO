@@ -367,10 +367,9 @@ char *quitarEspeciales(char *palabra)
     char *dst = palabra;
     size_t len = strlen(palabra);
 
-    /* Quitar BOM si existe */
     if (len >= 3 && src[0] == 0xEF && src[1] == 0xBB && src[2] == 0xBF)
     {
-        memmove(palabra, palabra + 3, len - 2); /* incluye '\0' */
+        memmove(palabra, palabra + 3, len - 2);
         src = (unsigned char *)palabra;
         len -= 3;
     }

@@ -31,20 +31,18 @@ Asignar capacidad
 int poner_dic(tDiccionario *pd, const void *valor, size_t tamDato, const char *clave);
 /*
 Mediante una funcion hash%capacidad, se transforma la clave en una posicion, que es la que define en cual de todas las listas vamos a insertar
-Utilizamos la funcion accion para definir si reemplazamos el valor por el nuevo, o para sumar al contador de apariciones.
 */
 
 int obtener_dic(const tDiccionario *pd, void *destino, size_t cant, const char *claveBusqueda, int (*cmp)(const void *,const void *));
 /*
 Nos paramos en la lista que cumpla hash%capacidad y usamos buscarLista para encontrar un nodo que en su info tenga una clave igual al hash
-Lo que devuelve buscarLista (La posición del nodo que tiene esa clave) se envía como posición en verListaPos
+Lo que devuelve buscarLista en destino es el valor que está asociado a la clave
 */
 
 int sacar_dic(tDiccionario *pd, void *destino, size_t cant, const char *claveBusqueda, int (*cmp)(const void *,const void *));
 /*
 Nos paramos en la lista que cumpla hash%capacidad y usamos buscarLista para encontrar un nodo que en su info tenga una clave igual al hash
 Lo que devuelve buscarLista (La posición del nodo que tiene esa clave) se envía como posición en sacarListaPos
-Se reduce la capacidad en 1
 */
 
 void liberar_dato_dic(void *info);
@@ -65,8 +63,8 @@ recorrerLista(tLista *pd, acccion)
 
 int destruir_dic(tDiccionario *pd,void (*liberar)(void *));
 /*
-Recorre todas las listas haciendo free
-Capacidad y cant pasan a ser 0
+Recorre todas las listas haciendo free y liberando la info del nodo
+Capacidad pasa a ser 0
 */
 
 size_t hashDiccionario(const char* str);
