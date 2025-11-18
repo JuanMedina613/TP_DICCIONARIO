@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1761972623 source:c:\users\administrator\documents\github\tp_diccionario\tp_diccionario\lista.c
+1763409322 source:c:\users\administrator\documents\github\tp_diccionario\tp_diccionario\lista.c
 	"lista.h"
 	"FuncionesDiccionario.h"
 
@@ -11,12 +11,12 @@
 1763340243 source:c:\users\administrator\documents\github\tp_diccionario\tp_diccionario\main.c
 	"ProcesadorTexto.h"
 
-1763340243 c:\users\administrator\documents\github\tp_diccionario\tp_diccionario\funcionesdiccionario.h
+1763485680 c:\users\administrator\documents\github\tp_diccionario\tp_diccionario\funcionesdiccionario.h
 	<stdio.h>
 	<stdlib.h>
 	"lista.h"
 
-1763340674 source:c:\users\administrator\documents\github\tp_diccionario\tp_diccionario\funcionesdiccionario.c
+1763482718 source:c:\users\administrator\documents\github\tp_diccionario\tp_diccionario\funcionesdiccionario.c
 	"FuncionesDiccionario.h"
 	"Lista.h"
 
@@ -82,7 +82,7 @@
 	<string.h>
 	<ctype.h>
 
-1763340243 source:c:\users\administrator\documents\github\tp_diccionario\tp_diccionario\procesadortexto.c
+1763486152 source:c:\users\administrator\documents\github\tp_diccionario\tp_diccionario\procesadortexto.c
 	"ProcesadorTexto.h"
 
 1763424349 source:c:\users\alpha\documents\github\tp_diccionario\tp_diccionario\funcionesdiccionario.c

@@ -202,17 +202,18 @@ int cargarArchivoEnDiccionario(tDiccionario* pd,FILE *pf)
 int TrozaryGuardarArchivo(char *linea,sDato *dato,tDiccionario *pd)
 {
     char *dir = linea;
-
+    int len=0;
     quitarEspeciales(linea);
 
     while(*dir != '\0' && *dir != '\n')
     {
         if(*dir != '-' && !miEsAlpha(*dir))
         {
-            int len = dir - linea;
+            len = dir - linea;
             strncpy(dato->clave, linea, len);
             dato->clave[len] = '\0';
             *dir = '\0';
+            len=0;
             if(dir != linea)
             {
                 sumarPalabra(pd, linea);
@@ -291,7 +292,7 @@ void menu(tDiccionario *pd)
             printf("Ingrese la palabra a buscar: ");
             scanf("%s", palabra_busqueda);
 
-            if((aparicionesPalabra = contarApariciones_de_una_Palabra(pd,quitarEspeciales(palabra_busqueda))) != 0 && miEsAlpha(*(int*)palabra_busqueda))
+            if((aparicionesPalabra = contarApariciones_de_una_Palabra(pd,quitarEspeciales(palabra_busqueda))) != 0 && (miEsAlpha(*(int*)palabra_busqueda) || *palabra_busqueda == '-' ))
                 printf("La palabra \"%s\" aparece %u veces.\n", palabra_busqueda, (unsigned int)aparicionesPalabra);
             else
             {
@@ -321,10 +322,12 @@ void menu(tDiccionario *pd)
 void imprimirDato(void *DatoDiccionario)
 {
     sDato* aux = (sDato*)DatoDiccionario;
+    char* linea = aux->clave;
 
+    if((*(linea + 1)) != '\0' && *linea == '-')
+        printf("\n'%15s' esta Palabra se repitio %4d",aux->clave,*(int*)aux->valor);
     if (!miEsAlpha(*(int*)aux->clave))
         return;
-
     printf("\n'%15s' esta Palabra se repitio %4d",aux->clave,*(int*)aux->valor);
 }
 ///================================================================================================================================///
