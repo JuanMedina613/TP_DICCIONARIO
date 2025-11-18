@@ -85,3 +85,29 @@
 1763340243 source:c:\users\administrator\documents\github\tp_diccionario\tp_diccionario\procesadortexto.c
 	"ProcesadorTexto.h"
 
+1763424349 source:c:\users\alpha\documents\github\tp_diccionario\tp_diccionario\funcionesdiccionario.c
+	"FuncionesDiccionario.h"
+	"Lista.h"
+
+1763424349 c:\users\alpha\documents\github\tp_diccionario\tp_diccionario\funcionesdiccionario.h
+	<stdio.h>
+	<stdlib.h>
+	"lista.h"
+
+1762063781 c:\users\alpha\documents\github\tp_diccionario\tp_diccionario\lista.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1763424349 source:c:\users\alpha\documents\github\tp_diccionario\tp_diccionario\lista.c
+	"lista.h"
+	"FuncionesDiccionario.h"
+
+1763424349 source:c:\users\alpha\documents\github\tp_diccionario\tp_diccionario\main.c
+	"ProcesadorTexto.h"
+
+1762150036 c:\users\alpha\documents\github\tp_diccionario\tp_diccionario\procesadortexto.h
+	"FuncionesDiccionario.h"
+	<string.h>
+	<ctype.h>
+

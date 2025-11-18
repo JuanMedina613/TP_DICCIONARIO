@@ -206,9 +206,12 @@ int TrozaryGuardarArchivo(char *linea,sDato *dato,tDiccionario *pd)
     quitarEspeciales(linea);
     dir = strchr(linea,'\n');
     if(!dir)
-        return ERROR1;
-
-    *dir = '\0';
+    {
+        dir = strchr(linea,'\0');
+        if(!dir)
+            return ERROR1;
+    }else
+        *dir = '\0';
 
     while(dir != linea)
     {
