@@ -52,7 +52,7 @@
 	"FuncionesDiccionario.h"
 	"Lista.h"
 
-1763398060 t:\documentos\github\tp_diccionario\tp_diccionario\funcionesdiccionario.h
+1763399516 t:\documentos\github\tp_diccionario\tp_diccionario\funcionesdiccionario.h
 	<stdio.h>
 	<stdlib.h>
 	"lista.h"
@@ -69,7 +69,7 @@
 1763397178 source:t:\documentos\github\tp_diccionario\tp_diccionario\main.c
 	"ProcesadorTexto.h"
 
-1763397564 source:t:\documentos\github\tp_diccionario\tp_diccionario\procesadortexto.c
+1763424948 source:t:\documentos\github\tp_diccionario\tp_diccionario\procesadortexto.c
 	"ProcesadorTexto.h"
 
 1762113284 t:\documentos\github\tp_diccionario\tp_diccionario\procesadortexto.h
