@@ -201,70 +201,31 @@ int cargarArchivoEnDiccionario(tDiccionario* pd,FILE *pf)
 ///================================================================================================================================///
 int TrozaryGuardarArchivo(char *linea,sDato *dato,tDiccionario *pd)
 {
-    char *dir = NULL;
+    char *dir = linea;
 
     quitarEspeciales(linea);
 
-    if(!linea)
-        return ERROR1;
-
-    dir = strchr(linea,'\n');
-    if(!dir)
+    while(*dir != '\0' && *dir != '\n')
     {
-        dir = strchr(linea,'\0');
-        if(!dir)
-            return ERROR1;
-    }else
-        *dir = '\0';
-
-    while(dir != linea)
-    {
-
-        while ((dir - 1) > linea && !miEsAlpha(*(dir - 1)))// si dir-1 no esta fuera de la linea(existe) y dir-1
-        {                                                  //no es un caracter y no es espacio vacio insertamos el caracter
-            dir = dir - 1;
-            *(dato->clave) = *dir;
-            *(dato->clave + 1) = '\0';
-            sumarPalabra(pd, dato->clave);
-
-            *dir = '\0'; //una vez guardado el caracter, \0 para seguir trozando
-        }
-        // busca desde el final el primer carácter no alfabético
-        dir = linea + strlen(linea) - 1;
-        while (dir >= linea && miEsAlpha(*dir))
-            dir--;
-        if (dir < linea)
-            dir = NULL;
-
-        if(!(dir))
+        if(*dir != '-' && !miEsAlpha(*dir))
         {
-            dir = linea; // En caso de que retorne NULL porque no hay espacios, significa que llegamos a fin de cadena, por ende igualamos
-            while(*dir && *dir != '\n' && !miEsAlpha(*dir))// si dir-1 no esta fuera de la linea(existe) y dir-1 no es un caracter y no es espacio vacio insertamos el caracter
+            int len = dir - linea;
+            strncpy(dato->clave, linea, len);
+            dato->clave[len] = '\0';
+            *dir = '\0';
+            if(dir != linea)
             {
-                *(dato->clave) = *dir;
-                *(dato->clave + 1) = '\0';
-                sumarPalabra(pd, dato->clave);
-                dir++;
+                sumarPalabra(pd, linea);
             }
-            strcpy(dato->clave,dir);
-            linea = dir;
-
-        }
-        else
-        {
-            *(dato->clave) = *dir;
-            *(dato->clave + 1) = '\0';
-            sumarPalabra(pd, dato->clave);
-            strcpy(dato->clave,dir + 1); // copio la palabra
+            linea = dir+1;
         }
 
-        sumarPalabra(pd, dato->clave);
-
-        *dir = '\0'; // continuo poniendo \0
-                     // El if se hace ya que, si estamos parados al principio no se puede hacer
-                     // dir + 1 ya que nos comeriamos una letra
+        dir++;
     }
 
+    if(*dir == '\n')
+        *dir = '\0';
+    sumarPalabra(pd, linea);
     return 1;
 }
 
