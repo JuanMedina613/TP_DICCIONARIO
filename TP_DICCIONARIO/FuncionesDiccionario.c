@@ -8,6 +8,8 @@ int crear_dic(tDiccionario *pd, size_t capacidad)
             return ERROR1;
     pd->capacidad = capacidad;
     tLista *aux = pd->lista;
+    pd->cantColisiones = 0;
+
     while(aux < pd->lista + capacidad)
     {
         crearLista(aux);
@@ -39,6 +41,9 @@ int poner_dic(tDiccionario *pd, const void *valor, size_t tamDato, const char *c
     memcpy(nuevo.valor, valor, tamDato);
 
     pos = hashDiccionario(clave) % pd->capacidad;
+
+    if(*(pd->lista + pos) != NULL)
+        pd->cantColisiones++;
 
     if(!listaInsertarActDup((pd->lista + pos), &nuevo, sizeof(nuevo), cmpClave, actValorReemplazo))
     {

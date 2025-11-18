@@ -315,6 +315,7 @@ void menu(tDiccionario *pd)
             printf("Cantidad total de palabras: %u\n", (unsigned int)total_palabras);
             printf("Cantidad total de espacios: %u\n", (unsigned int)total_espacios);
             printf("Cantidad total de signos y caracteres especiales: %u\n", (unsigned int)total_signos);
+            printf("Cantidad total de colisiones: %u\n", (unsigned int)pd->cantColisiones);
 
             break;
 

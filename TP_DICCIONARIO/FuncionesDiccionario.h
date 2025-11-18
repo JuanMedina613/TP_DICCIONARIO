@@ -13,6 +13,7 @@ typedef struct
 {
     tLista *lista;
     size_t capacidad;
+    size_t cantColisiones;
 }tDiccionario;
 
 typedef struct{
