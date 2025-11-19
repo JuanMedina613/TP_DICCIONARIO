@@ -4,11 +4,15 @@ void sumarValoresDic(void *DatoDiccionario, void *destino)
 {
     sDato *elemento = (sDato *)DatoDiccionario;
     size_t * acum = (size_t *)destino;
-    char c = *elemento->clave;
-    if (isalpha((int)c))
+    char *c = elemento->clave;
+    if (isalpha(*c))
     {
         (*acum) += *(size_t *)(elemento->valor);
     }
+    else
+        if(*c == '-' && isalpha(*(c+1)))
+            (*acum) += *(size_t *)(elemento->valor);
+
 }
 ///================================================================================================================================///
 void sumarEspaciosDic(void *dato, void *destino)
@@ -98,9 +102,9 @@ void sumarSignosDic(void *DatoDiccionario, void *destino)
     sDato *elemento = (sDato *)DatoDiccionario;
     size_t *acum = (size_t *)destino;
 
-    char c = *(char *)elemento->clave; //Asumimos que la clave es un solo caracter (signo o espacio)
+    char *c = (char *)elemento->clave; //Asumimos que la clave es un solo caracter (signo o espacio)
 
-    if (!isalpha(c) && c != ' ')     // Si la clave NO es una letra Y NO es un espacio, la consideramos un "signo" o caracter especial
+    if (!isalpha(*c) && *(c+1)=='\0' && *c != ' ')     // Si la clave NO es una letra Y NO es un espacio, la consideramos un "signo" o caracter especial
     {
         (*acum) += *(size_t *)(elemento->valor); // Sumar el contador de apariciones de este signo
     }
@@ -113,10 +117,10 @@ int sumarPalabra(tDiccionario *pd, char* clave)
     if(!clave)
         return ERROR1;
 
-    if(obtener_dic(pd,&contador,sizeof(size_t),quitarEspeciales(clave),cmpClaveBusqueda) == TODO_OKEY)
+    if(obtener_dic(pd,&contador,sizeof(size_t),clave,cmpClaveBusqueda) == TODO_OKEY)
         contador += 1;
 
-    if(poner_dic(pd,&contador,sizeof(size_t), quitarEspeciales(clave)) != TODO_OKEY)
+    if(poner_dic(pd,&contador,sizeof(size_t), clave) != TODO_OKEY)
     {
         return ERROR1;
     }
@@ -202,18 +206,16 @@ int cargarArchivoEnDiccionario(tDiccionario* pd,FILE *pf)
 int TrozaryGuardarArchivo(char *linea,sDato *dato,tDiccionario *pd)
 {
     char *dir = linea;
-    int len=0;
     quitarEspeciales(linea);
 
     while(*dir != '\0' && *dir != '\n')
     {
         if(*dir != '-' && !isalpha(*dir))
         {
-            len = dir - linea;
-            strncpy(dato->clave, linea, len);
-            dato->clave[len] = '\0';
+            *(dato->clave) = *dir;
+            *(dato->clave + 1) = '\0';
+            sumarPalabra(pd,dato->clave);
             *dir = '\0';
-            len=0;
             if(dir != linea)
             {
                 sumarPalabra(pd, linea);
@@ -361,7 +363,7 @@ char *quitarEspeciales(char *palabra)
             }
             else if (c == 0xC2 && n == 0xA1)
             {
-                *dst++ = (char)0xA1;    /* ¡ */
+                *dst++ = '!';    /* ¡ */
             }
             else if (c == 0xC3 && n == 0xA1)
             {
