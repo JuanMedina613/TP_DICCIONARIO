@@ -5,7 +5,7 @@ void sumarValoresDic(void *DatoDiccionario, void *destino)
     sDato *elemento = (sDato *)DatoDiccionario;
     size_t * acum = (size_t *)destino;
     char c = *elemento->clave;
-    if (miEsAlpha((int)c))
+    if (isalpha((int)c))
     {
         (*acum) += *(size_t *)(elemento->valor);
     }
@@ -100,7 +100,7 @@ void sumarSignosDic(void *DatoDiccionario, void *destino)
 
     char c = *(char *)elemento->clave; //Asumimos que la clave es un solo caracter (signo o espacio)
 
-    if (!miEsAlpha(c) && c != ' ')     // Si la clave NO es una letra Y NO es un espacio, la consideramos un "signo" o caracter especial
+    if (!isalpha(c) && c != ' ')     // Si la clave NO es una letra Y NO es un espacio, la consideramos un "signo" o caracter especial
     {
         (*acum) += *(size_t *)(elemento->valor); // Sumar el contador de apariciones de este signo
     }
@@ -207,7 +207,7 @@ int TrozaryGuardarArchivo(char *linea,sDato *dato,tDiccionario *pd)
 
     while(*dir != '\0' && *dir != '\n')
     {
-        if(*dir != '-' && !miEsAlpha(*dir))
+        if(*dir != '-' && !isalpha(*dir))
         {
             len = dir - linea;
             strncpy(dato->clave, linea, len);
@@ -262,8 +262,8 @@ void menu(tDiccionario *pd)
 
         if(scanf("%d", &opcion) != 1)
         {
-            opcion = -1;              // Forzar un valor inválido si la entrada no es un número
-            while(getchar() != '\n'); // Limpiar el buffer de entrada
+            opcion = -1;
+            while(getchar() != '\n');
         }
 
         system("cls");
@@ -292,11 +292,11 @@ void menu(tDiccionario *pd)
             printf("Ingrese la palabra a buscar: ");
             scanf("%s", palabra_busqueda);
 
-            if((aparicionesPalabra = contarApariciones_de_una_Palabra(pd,quitarEspeciales(palabra_busqueda))) != 0 && (miEsAlpha(*(int*)palabra_busqueda) || *palabra_busqueda == '-' ))
+            if((aparicionesPalabra = contarApariciones_de_una_Palabra(pd,quitarEspeciales(palabra_busqueda))) != 0 && (isalpha(*(int*)palabra_busqueda) || *palabra_busqueda == '-' ))
                 printf("La palabra \"%s\" aparece %u veces.\n", palabra_busqueda, (unsigned int)aparicionesPalabra);
             else
             {
-                if(!miEsAlpha(*(int*)palabra_busqueda))
+                if(!isalpha(*(int*)palabra_busqueda))
                     printf("El Simbolo o la Palabra con Simbolo \"%s\" No se Puede Mostrar.\n",palabra_busqueda);
                 else
                     printf("La Palabra \"%s\" No Aparece en el Texto.\n",palabra_busqueda);
@@ -326,7 +326,7 @@ void imprimirDato(void *DatoDiccionario)
 
     if((*(linea + 1)) != '\0' && *linea == '-')
         printf("\n'%15s' esta Palabra se repitio %4d",aux->clave,*(int*)aux->valor);
-    if (!miEsAlpha(*(int*)aux->clave))
+    if (!isalpha(*(int*)aux->clave))
         return;
     printf("\n'%15s' esta Palabra se repitio %4d",aux->clave,*(int*)aux->valor);
 }
@@ -351,7 +351,6 @@ char *quitarEspeciales(char *palabra)
     {
         unsigned char c = src[i];
 
-        /* UTF-8 de 2 bytes */
         if ((c == 0xC2 || c == 0xC3) && (i + 1 < len))
         {
             unsigned char n = src[i + 1];
@@ -422,7 +421,7 @@ char *quitarEspeciales(char *palabra)
             }
             else if (n >= 0x20 && n <= 0x7E)
             {
-                *dst++ = (char)n;    /* ASCII secundario */
+                *dst++ = (char)n;
             }
             else
             {
@@ -431,7 +430,6 @@ char *quitarEspeciales(char *palabra)
 
             i += 2; /* avanzamos dos bytes */
         }
-        /* Latin-1 single byte */
         else if (c >= 0xC0)
         {
             if (c == 0xE1) *dst++ = 'a'; /* á */
@@ -453,7 +451,6 @@ char *quitarEspeciales(char *palabra)
 
             i += 1;
         }
-        /* ASCII normal */
         else
         {
             *dst++ = (char)c;
@@ -463,34 +460,4 @@ char *quitarEspeciales(char *palabra)
 
     *dst = '\0';
     return palabra;
-}
-
-int miEsAlpha(int c)
-{
-    // Letras normales A-Z / a-z
-    if (isalpha(c))
-        return 1;
-
-    switch (c)// Vocales acentuadas básicas (á, é, í, ó, ú y sus mayúsculas)
-    {
-    case 0xE1:
-    case 0xC1: // á Á
-    case 0xE9:
-    case 0xC9: // é É
-    case 0xED:
-    case 0xCD: // í Í
-    case 0xF3:
-    case 0xD3: // ó Ó
-    case 0xFA:
-    case 0xDA: // ú Ú
-    case 0xF1:
-    case 0xD1: // ñ Ñ
-    case 0xFC:
-    case 0xDC: // ü Ü
-    case 0xBF:
-
-        return 1;
-    default:
-        return 0;
-    }
 }

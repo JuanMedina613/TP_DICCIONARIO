@@ -8,7 +8,7 @@
 #define TODO_OKEY 1
 #define VACIO 0
 #define NO_ENCONTRADA 0
-#define CAPACIDAD_INICIAL 10000 //"A mayor capacidad, mayor velocidad."
+#define CAPACIDAD_INICIAL 10000 //a mayor capacidad, mayor velocidad
 typedef struct
 {
     tLista *lista;

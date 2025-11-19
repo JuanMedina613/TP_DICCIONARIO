@@ -20,7 +20,6 @@ int TrozaryGuardarArchivo(char *linea,sDato *dato,tDiccionario *pd);
 
 void menu(tDiccionario *pd);
 
-int miEsAlpha(int c);
 char *quitarEspeciales(char *palabra);
 
 #endif // PROCESADORTEXTO_H_INCLUDED
