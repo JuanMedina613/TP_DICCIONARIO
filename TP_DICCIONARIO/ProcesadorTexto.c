@@ -216,7 +216,7 @@ int TrozaryGuardarArchivo(char *linea,sDato *dato,tDiccionario *pd)
             *(dato->clave + 1) = '\0';
             sumarPalabra(pd,dato->clave);
             *dir = '\0';
-            if(dir != linea)
+            if(dir != linea && *linea != '\0')
             {
                 sumarPalabra(pd, linea);
             }
@@ -228,7 +228,8 @@ int TrozaryGuardarArchivo(char *linea,sDato *dato,tDiccionario *pd)
 
     if(*dir == '\n')
         *dir = '\0';
-    sumarPalabra(pd, linea);
+    if (*linea != '\0')
+        sumarPalabra(pd, linea);
     return 1;
 }
 
