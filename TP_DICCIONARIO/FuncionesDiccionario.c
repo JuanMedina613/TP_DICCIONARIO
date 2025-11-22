@@ -88,7 +88,7 @@ int sacar_dic(tDiccionario *pd, void *destino, size_t cant, const char *claveBus
 
     resultado = listaSacarPorContenido(pLista, destino, cant, (const void *)claveBusqueda, cmp, liberar_dato_dic);//Buscamos y sacamos
 
-    return (resultado == TODO_OK) ? TODO_OKEY : resultado; //Si resultado es TODO_OK devuelve TODO_OKEY, si no, devuelve el valor de resultado
+    return resultado;
 }
 ///================================================================================================================================///
 void liberar_dato_dic(void *info)

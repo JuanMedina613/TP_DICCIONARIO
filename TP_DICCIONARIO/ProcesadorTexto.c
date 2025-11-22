@@ -104,7 +104,7 @@ void sumarSignosDic(void *DatoDiccionario, void *destino)
 
     char *c = (char *)elemento->clave; //Asumimos que la clave es un solo caracter (signo o espacio)
 
-    if (!isalpha(*c) && *(c+1)=='\0' && *c != ' ')     // Si la clave NO es una letra Y NO es un espacio, la consideramos un "signo" o caracter especial
+    if (!isalpha(*c) && *(c+1)=='\0' && *c != ' ')     // Si la clave NO es una letra Y NO es un espacio, la consideramos un "signo" o caracter especial. El segundo caracter debe ser un \0
     {
         (*acum) += *(size_t *)(elemento->valor); // Sumar el contador de apariciones de este signo
     }
@@ -156,7 +156,7 @@ int seleccionarArchivo(tDiccionario*pd)
     case 4:
         strcpy(nombreArchivo, "4.txt");
         break;
-    } /// ESTE SWITCH ES EN CASO DE QUE EL USUARIO PONGA NOMBRE DE ARCHIVO
+    }
     pf = fopen(nombreArchivo,"rt");
     if(!pf)
     {
@@ -257,7 +257,7 @@ void menu(tDiccionario *pd)
         printf("\n============================================\n");
         printf("               MENU DE ANALISIS\n");
         printf("============================================\n");
-        printf("1. Mostrar estadisticas generales (Palabras, Signos, y Espacios)\n");
+        printf("1. Mostrar estadisticas generales (Palabras, Signos, Espacios, y Colisiones)\n");
         printf("2. Mostrar listado de apariciones por palabra (Recorrer Diccionario)\n");
         printf("3. Buscar apariciones de una palabra en particular\n");
         printf("0. Salir\n");
@@ -321,7 +321,7 @@ void menu(tDiccionario *pd)
     }
     while(opcion != 0);
 }
-//**Funcion de Mostrar**//
+///================================================================================================================================///
 void imprimirDato(void *DatoDiccionario)
 {
     sDato* aux = (sDato*)DatoDiccionario;

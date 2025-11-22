@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include "lista.h"
 
-#define ERROR1 0 //Problema de Memoria
+#define ERROR1 0
 #define TODO_OKEY 1
 #define VACIO 0
 #define NO_ENCONTRADA 0
